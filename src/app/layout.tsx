@@ -3,6 +3,7 @@ import "./globals.css";
 import { Raleway } from "next/font/google"
 import HeaderComponent from "@/components/fragments/HeaderComponent";
 import {NavbarComponent} from "@/components/fragments/NavbarComponent";
+import FooterComponent from "@/components/fragments/FooterComponent";
 
 const raleway = Raleway({
   subsets: ["latin"]
@@ -25,7 +26,10 @@ export default function RootLayout({
       >
         <NavbarComponent/>
         <HeaderComponent/>
-        {children}
+        <main className="w-full min-h-screen">
+          {children}
+        </main>
+        <FooterComponent/>
       </body>
     </html>
   );

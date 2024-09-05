@@ -1,8 +1,7 @@
 import React from 'react'
 
-type Props = {}
 
-export default function HeaderComponent({ }: Props) {
+export default function HeaderComponent() {
   return (
     <header
       className='h-[70vh] w-full bg-center object-cover bg-cover '
