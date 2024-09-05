@@ -3,10 +3,33 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
+
+type LinkNav = {
+  text: string,
+  url: string
+}
+
 const Navbar = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [navbar1Height, setNavbar1Height] = useState(0);
   const navbar1Ref = useRef<HTMLDivElement | null>(null);
+
+
+
+  const listPrimaryNav: LinkNav[] = [
+    {
+      text: "Beranda",
+      url : "/"
+    },
+    {
+      text: "Tentang Kami",
+      url : "/"
+    },
+    {
+      text: "Hubungi Kami",
+      url : "/"
+    }
+  ]
 
   // UseEffect to handle scroll event and update height
   useEffect(() => {
@@ -32,7 +55,7 @@ const Navbar = () => {
       {/* Navbar1 */}
       <div
         ref={navbar1Ref}
-        className={`bg-black/90 transition-transform py-5`}
+        className={`bg-black/90 transition-transform py-5 flex  items-center justify-between px-5`}
         style={{
           transform: scrollPosition > 100 ? `translateY(-${navbar1Height}px)` : 'translateY(0)',
         }}
@@ -42,10 +65,14 @@ const Navbar = () => {
           alt='Logo'
           width={200}
           height={200}
-          className='w-60'
+          className='w-40'
         />
-        <ul>
-          
+        <ul className='flex gap-3'>
+          {
+            listPrimaryNav.map((item:LinkNav,index:number)=>(
+              <ButtonNavigation key={`nav-primary-${index}`} href={item.url}>{item.text}</ButtonNavigation>
+            ))
+          }
         </ul>
       </div>
 
@@ -61,6 +88,10 @@ const Navbar = () => {
     </nav>
   );
 };
+
+
+
+
 type ButtonNavigationType = {
   children: ReactNode,
   href: string
@@ -71,7 +102,7 @@ function ButtonNavigation({
   href
 }:ButtonNavigationType) {
   return (
-    <Link href={href}>{children}</Link>
+    <Link className='font-bold hover:text-primary' href={href}>{children}</Link>
   )
 }
 
