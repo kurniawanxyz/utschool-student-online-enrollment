@@ -25,3 +25,39 @@ body {
     text-wrap: balance;
   }
 }
+
+/* globals.css or any custom CSS file */
+
+@keyframes slide-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.hide-navbar1 {
+  animation: slide-up 0.5s forwards;
+}
+
+.show-navbar1 {
+  animation: slide-down 0.5s forwards;
+}
+
+.hide-navbar2 {
+  animation: slide-down 0.5s forwards;
+}
+
+.show-navbar2 {
+  animation: slide-up 0.5s forwards;
+}
