@@ -62,6 +62,17 @@ export function NavbarComponent() {
     return () => clearTimeout(timer);
   }, [pathNow]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (navbar1Ref.current) {
+        setNavbar1Height(navbar1Ref.current.offsetHeight);
+      }
+    }, 100); // Timeout untuk memastikan semuanya sudah dimuat dengan benar
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
+
   console.log('Navbar1 Height:', navbar1Height);
   console.log('Active Link Dimensions:', activeLinkDimensions);
 
