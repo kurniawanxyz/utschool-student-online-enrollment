@@ -1,61 +1,76 @@
 "use client"
-import Image from 'next/image';
-import Link from 'next/link';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-
+import cn from "@/utils/cn";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 type LinkNav = {
   text: string,
   url: string
 }
 
-const Navbar = () => {
+const listPrimaryNav: LinkNav[] = [
+  { text: "Beranda", url: "/" },
+  { text: "Tentang Kami", url: "/" },
+  { text: "Hubungi Kami", url: "/" }
+];
+
+const listSecondaryNav: LinkNav[] = [
+  { text: "Registration Flow", url: "/" },
+  { text: "Selection Schedule", url: "/selection-schedule" },
+  { text: "Registration Requirement", url: "/registration-requirement" },
+  { text: "Online Registration", url: "/online-registration" },
+  { text: "Announcement Selection", url: "/announcement-selection" },
+];
+
+export function NavbarComponent() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [navbar1Height, setNavbar1Height] = useState(0);
+  const [activeLinkDimensions, setActiveLinkDimensions] = useState<{ width: number; left: number } | null>(null);
+  
   const navbar1Ref = useRef<HTMLDivElement | null>(null);
+  const pathNow = usePathname();
 
-
-
-  const listPrimaryNav: LinkNav[] = [
-    {
-      text: "Beranda",
-      url : "/"
-    },
-    {
-      text: "Tentang Kami",
-      url : "/"
-    },
-    {
-      text: "Hubungi Kami",
-      url : "/"
-    }
-  ]
-
-  // UseEffect to handle scroll event and update height
   useEffect(() => {
     const handleScroll = () => {
-      setScrollPosition(window.scrollY); // Update scroll position
+      setScrollPosition(window.scrollY);
     };
 
-    // Update navbar1Height after the component mounts
     if (navbar1Ref.current) {
       setNavbar1Height(navbar1Ref.current.offsetHeight);
     }
 
     window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll); // Cleanup
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, []); // Only run once on mount
+  }, []);
 
-  console.log(navbar1Height)
+  useEffect(() => {
+    // Timeout to ensure DOM is fully updated
+    const timer = setTimeout(() => {
+      const activeLink = document.querySelector('[data-active="true"]') as HTMLElement;
+      if (activeLink) {
+        const { width, left } = activeLink.getBoundingClientRect();
+        setActiveLinkDimensions({ width, left });
+      } else {
+        console.log('No active link found');
+      }
+    }, 100); // Adjust timeout as needed
+
+    return () => clearTimeout(timer);
+  }, [pathNow]);
+
+  console.log('Navbar1 Height:', navbar1Height);
+  console.log('Active Link Dimensions:', activeLinkDimensions);
 
   return (
     <nav className='fixed z-10 top-0 w-full'>
       {/* Navbar1 */}
       <div
         ref={navbar1Ref}
-        className={`bg-black/90 transition-transform py-5 flex  items-center justify-between px-5`}
+        className={`bg-black/90 transition-transform py-5 flex items-center justify-between px-20`}
         style={{
           transform: scrollPosition > 100 ? `translateY(-${navbar1Height}px)` : 'translateY(0)',
         }}
@@ -68,42 +83,61 @@ const Navbar = () => {
           className='w-40'
         />
         <ul className='flex gap-3'>
-          {
-            listPrimaryNav.map((item:LinkNav,index:number)=>(
-              <ButtonNavigation key={`nav-primary-${index}`} href={item.url}>{item.text}</ButtonNavigation>
-            ))
-          }
+          {listPrimaryNav.map((item: LinkNav, index: number) => (
+            <ButtonNavigation key={`nav-primary-${index}`} href={item.url}>{item.text}</ButtonNavigation>
+          ))}
         </ul>
       </div>
 
       {/* Navbar2 */}
       <div
-        className={`bg-black/90 transition-transform`}
+        className={`bg-black/90 transition-transform px-20 pt-5`}
         style={{
           transform: scrollPosition > 100 ? `translateY(-${navbar1Height}px)` : 'translateY(0)',
         }}
       >
-        <p>TNavbar2</p>
+        <ul className='flex w-full justify-between relative'>
+          {listSecondaryNav.map((item: LinkNav, index: number) => (
+            <ButtonNavigation
+              key={`nav-secondary-${index}`}
+              href={item.url}
+              dataActive={pathNow === item.url ? 'true' : 'false'}
+            >
+              {item.text}
+            </ButtonNavigation>
+          ))}
+        </ul>
+        {activeLinkDimensions && (
+          <hr
+            className='sticky h-1 border-none bg-primary mt-1 transition-all duration-200 ease-in-out'
+            style={{
+              width: activeLinkDimensions.width,
+              left: activeLinkDimensions.left,
+            }}
+          />
+        )}
       </div>
     </nav>
   );
 };
 
-
-
-
 type ButtonNavigationType = {
   children: ReactNode,
-  href: string
+  href: string,
+  className?: string,
+  dataActive?: string
 }
 
 function ButtonNavigation({
   children,
-  href
-}:ButtonNavigationType) {
+  href,
+  className = "",
+  dataActive
+}: ButtonNavigationType) {
+  const style = cn(className, 'font-bold hover:text-primary');
   return (
-    <Link className='font-bold hover:text-primary' href={href}>{children}</Link>
-  )
+    <Link className={style} href={href} data-active={dataActive}>
+      {children}
+    </Link>
+  );
 }
-
-export default Navbar;
