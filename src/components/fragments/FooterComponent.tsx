@@ -2,7 +2,6 @@ import cn from "@/utils/cn";
 import Image from "next/image"
 import Link from "next/link";
 import { ReactNode } from "react";
-import { IoIosArrowUp } from "react-icons/io";
 import ButtonFooterComponent from "../elements/ButtonFooterComponent";
 type LinkNav = {
   text: string;
