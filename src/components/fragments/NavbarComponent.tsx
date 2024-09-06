@@ -88,7 +88,7 @@ export function NavbarComponent() {
       {/* Navbar1 */}
       <div
         ref={navbar1Ref}
-        className="bg-black transition-transform py-1 flex items-center justify-end px-20"
+        className="bg-black transition-transform py-1 flex items-center justify-end px-5 lg:px-20"
         style={{
           transform:
             scrollPosition > 100
