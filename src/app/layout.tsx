@@ -4,6 +4,7 @@ import { Raleway } from "next/font/google"
 import HeaderComponent from "@/components/fragments/HeaderComponent";
 import {NavbarComponent} from "@/components/fragments/NavbarComponent";
 import FooterComponent from "@/components/fragments/FooterComponent";
+import { Analytics } from "@vercel/analytics/react"
 
 const raleway = Raleway({
   subsets: ["latin"]
@@ -30,6 +31,7 @@ export default function RootLayout({
           {children}
         </main>
         <FooterComponent/>
+        <Analytics/>
       </body>
     </html>
   );
