@@ -1,3 +1,4 @@
+"use client"
 import dynamic from "next/dynamic"
 import BannerComponent from "../fragments/BannerComponent"
 const FormOnlineRegistrationComponent = dynamic(()=>import("../fragments/FormOnlineRegistrationComponent"),{ssr:false})
