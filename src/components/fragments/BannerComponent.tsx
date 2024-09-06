@@ -1,5 +1,3 @@
-import React from 'react'
-
 type Props = {
     title: string
     description: string
@@ -7,7 +5,7 @@ type Props = {
 
 const BannerComponent = ({title,description}: Props) => {
   return (
-    <article className='w-full p-10 flex flex-col justify-center items-center gap-3 border-b border-black'>
+    <article className='w-full p-10 flex flex-col justify-center items-center gap-3 border-b-2 border-slate-400'>
         <div className='bg-primary flex justify-center items-center p-5 text-black font-bold shadow'>
             <h1>{title}</h1>
         </div>

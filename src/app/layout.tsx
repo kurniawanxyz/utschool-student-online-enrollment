@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${raleway.className} bg-slate-200 min-h-[200vh]`}
+        className={`${raleway.className} bg-slate-100 min-h-[200vh]`}
       >
         <NavbarComponent/>
         <HeaderComponent/>
