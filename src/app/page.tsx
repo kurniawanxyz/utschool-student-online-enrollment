@@ -1,5 +1,5 @@
-import RegistrationFlowPages from "@/components/pages/RegistrationFlowPages";
+import UnderMaintenancePage from "@/components/pages/UnderMaintancePage";
 
 export default function RegistrationFlowRoute() {
-  return <RegistrationFlowPages/>
+  return <UnderMaintenancePage />
 }
