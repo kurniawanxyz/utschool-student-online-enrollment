@@ -17,11 +17,11 @@ type LinkNav = {
 const listPrimaryNav: LinkNav[] = [{ text: "Hubungi Kami", url: "/" }];
 
 let listSecondaryNav: LinkNav[] = [
-  { text: "Registration Flow", url: "/" },
-  { text: "Selection Schedule", url: "/selection-schedule" },
-  { text: "Registration Requirement", url: "/registration-requirement" },
-  { text: "Online Registration", url: "/online-registration" },
-  { text: "Announcement Selection", url: "/announcement-selection" },
+  { text: "Alur Pendaftaran", url: "/" },
+  { text: "Jadwal Seleksi", url: "/selection-schedule" },
+  { text: "Syarat Pendaftaran", url: "/registration-requirement" },
+  { text: "Pedaftaran Online", url: "/online-registration" },
+  { text: "Pengumuman Hasil Seleksi", url: "/announcement-selection" },
 ];
 
 export function NavbarComponent() {
