@@ -1,39 +1,39 @@
-"use client"
+"use client";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import cn from "@/utils/cn";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { LiaTimesSolid } from "react-icons/lia";
+import { HiMiniBars3BottomRight } from "react-icons/hi2";
+
 
 type LinkNav = {
-  text: string,
-  url: string
-}
+  text: string;
+  url: string;
+};
 
-const listPrimaryNav: LinkNav[] = [
-  { text: "Beranda", url: "/" },
-  { text: "Tentang Kami", url: "/" },
-  { text: "Hubungi Kami", url: "/" }
-];
+const listPrimaryNav: LinkNav[] = [{ text: "Hubungi Kami", url: "/" }];
 
 let listSecondaryNav: LinkNav[] = [
-  { text: "Beranda", url: "/" },
   { text: "Registration Flow", url: "/" },
   { text: "Selection Schedule", url: "/selection-schedule" },
   { text: "Registration Requirement", url: "/registration-requirement" },
   { text: "Online Registration", url: "/online-registration" },
   { text: "Announcement Selection", url: "/announcement-selection" },
-  { text: "Tentang Kami", url: "/" },
-  { text: "Hubungi Kami", url: "/" }
 ];
 
 export function NavbarComponent() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [navbar1Height, setNavbar1Height] = useState(0);
-  const currentBp = useBreakpoint()
-  const [activeLinkDimensions, setActiveLinkDimensions] = useState<{ width: number; left: number } | null>(null);
-  
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State untuk toggle menu mobile
+  const currentBp = useBreakpoint();
+  const [activeLinkDimensions, setActiveLinkDimensions] = useState<{
+    width: number;
+    left: number;
+  } | null>(null);
+
   const navbar1Ref = useRef<HTMLDivElement | null>(null);
   const pathNow = usePathname();
 
@@ -46,110 +46,147 @@ export function NavbarComponent() {
       setNavbar1Height(navbar1Ref.current.offsetHeight);
     }
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   useEffect(() => {
-    // Timeout to ensure DOM is fully updated
     const timer = setTimeout(() => {
-      const activeLink = document.querySelector('[data-active="true"]') as HTMLElement;
+      const activeLink = document.querySelector(
+        '[data-active="true"]'
+      ) as HTMLElement;
       if (activeLink) {
         const { width, left } = activeLink.getBoundingClientRect();
         setActiveLinkDimensions({ width, left });
-      } else {
-        console.log('No active link found');
       }
-    }, 100); // Adjust timeout as needed
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [pathNow]);
 
   useEffect(() => {
-  const timer = setTimeout(() => {
-    if (navbar1Ref.current) {
-      setNavbar1Height(navbar1Ref.current.offsetHeight);
-    }
-  }, 100); // Timeout untuk memastikan semuanya sudah dimuat dengan benar
-  
-  return () => clearTimeout(timer);
-}, []);
+    const timer = setTimeout(() => {
+      if (navbar1Ref.current) {
+        setNavbar1Height(navbar1Ref.current.offsetHeight);
+      }
+    }, 100);
 
-if (currentBp !== "sm") {
-  listSecondaryNav = listSecondaryNav.filter(
-    (item: LinkNav) =>
-      !listPrimaryNav.some((item2: LinkNav) => item2.text === item.text)
-  );
-}
+    return () => clearTimeout(timer);
+  }, []);
 
-  console.log('Navbar1 Height:', navbar1Height);
-  console.log('Active Link Dimensions:', activeLinkDimensions);
-  console.log(currentBp)
+  if (currentBp !== "sm") {
+    listSecondaryNav = listSecondaryNav.filter(
+      (item: LinkNav) =>
+        !listPrimaryNav.some((item2: LinkNav) => item2.text === item.text)
+    );
+  }
 
   return (
-    <nav className='fixed z-10 top-0 w-full'>
+    <nav className="fixed z-10 top-0 w-full">
       {/* Navbar1 */}
       <div
         ref={navbar1Ref}
-        className={`bg-black/90 transition-transform py-5 flex items-center justify-between px-20`}
+        className="bg-black transition-transform py-1 flex items-center justify-end px-20"
         style={{
-          transform: scrollPosition > 100 ? `translateY(-${navbar1Height}px)` : 'translateY(0)',
+          transform:
+            scrollPosition > 100
+              ? `translateY(-${navbar1Height}px)`
+              : "translateY(0)"
         }}
       >
-        <Image
-          src={'/images/logo/1.png'}
-          alt='Logo'
-          width={200}
-          height={200}
-          className='w-40'
-        />
-        <ul className='flex gap-3'>
+        <ul className="flex gap-3 text-[11px]">
           {listPrimaryNav.map((item: LinkNav, index: number) => (
-            <ButtonNavigation key={`nav-primary-${index}`} href={item.url}>{item.text}</ButtonNavigation>
+            <ButtonNavigation key={`nav-primary-${index}`} href={item.url}>
+              {item.text}
+            </ButtonNavigation>
           ))}
         </ul>
       </div>
 
       {/* Navbar2 */}
       <div
-        className={`bg-black/90 transition-transform px-5 md:px-20 pt-5`}
+        className="bg-black/90 transition-transform px-5 md:px-20 py-3 flex items-center justify-between"
         style={{
-          transform: scrollPosition > 100 ? `translateY(-${navbar1Height}px)` : 'translateY(0)',
+          transform:
+            scrollPosition > 100
+              ? `translateY(-${navbar1Height}px)`
+              : "translateY(0)"
         }}
       >
-        <ul className='flex w-full justify-between relative'>
-          {listSecondaryNav.map((item: LinkNav, index: number) => (
-            <ButtonNavigation
-              key={`nav-secondary-${index}`}
-              href={item.url}
-              dataActive={pathNow === item.url ? 'true' : 'false'}
-            >
-              {item.text}
-            </ButtonNavigation>
-          ))}
-        </ul>
-        {activeLinkDimensions && (
-          <hr
-            className='sticky h-1 border-none bg-primary mt-1 transition-all duration-200 ease-in-out'
-            style={{
-              width: activeLinkDimensions.width,
-              left: activeLinkDimensions.left,
-            }}
-          />
+        <Image
+          src={"/images/logo/1.png"}
+          alt="Logo"
+          width={200}
+          height={200}
+          className="w-32"
+        />
+
+        {/* Hamburger button for mobile */}
+        <div className="block lg:hidden">
+          <button
+            className="text-white focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <LiaTimesSolid size={24} /> : <HiMiniBars3BottomRight size={24} />}
+          </button>
+        </div>
+
+        {/* Menu for larger screens */}
+        <div className="hidden lg:flex justify-center flex-col items-center">
+          <ul className="flex w-full justify-end relative gap-4">
+            {listSecondaryNav.map((item: LinkNav, index: number) => (
+              <ButtonNavigation
+                key={`nav-secondary-${index}`}
+                href={item.url}
+                className="text-[13px]"
+                dataActive={pathNow === item.url ? "true" : "false"}
+              >
+                {item.text}
+              </ButtonNavigation>
+            ))}
+          </ul>
+          {activeLinkDimensions && (
+            <hr
+              className="fixed h-1 border-none bg-primary mt-1 transition-all duration-200 ease-in-out"
+              style={{
+                width: activeLinkDimensions.width,
+                left: activeLinkDimensions.left,
+                top: 40
+              }}
+            />
+          )}
+        </div>
+
+        {/* Menu for mobile */}
+        {isMenuOpen && (
+          <div className="lg:hidden absolute top-full left-0 w-full bg-black text-white p-5">
+            <ul className="flex flex-col gap-4">
+              {listSecondaryNav.map((item: LinkNav, index: number) => (
+                <ButtonNavigation
+                  key={`nav-mobile-${index}`}
+                  href={item.url}
+                  className="text-[13px]"
+                  dataActive={pathNow === item.url ? "true" : "false"}
+                >
+                  {item.text}
+                </ButtonNavigation>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     </nav>
   );
-};
+}
 
 type ButtonNavigationType = {
-  children: ReactNode,
-  href: string,
-  className?: string,
-  dataActive?: string
-}
+  children: ReactNode;
+  href: string;
+  className?: string;
+  dataActive?: string;
+};
 
 function ButtonNavigation({
   children,
@@ -157,7 +194,7 @@ function ButtonNavigation({
   className = "",
   dataActive
 }: ButtonNavigationType) {
-  const style = cn(className, 'font-bold hover:text-primary');
+  const style = cn(className, "font-bold hover:text-primary");
   return (
     <Link className={style} href={href} data-active={dataActive}>
       {children}
