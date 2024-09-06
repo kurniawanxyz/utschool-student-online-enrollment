@@ -84,7 +84,7 @@ export function NavbarComponent() {
   }
 
   return (
-    <nav className="fixed z-10 top-0 w-full">
+    <nav className="fixed top-0 w-full z-[1000000]">
       {/* Navbar1 */}
       <div
         ref={navbar1Ref}
