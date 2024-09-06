@@ -2,7 +2,6 @@
 
 import { useOnlineRegistration } from "@/stores/useOnlineRegistration";
 import { TbCircleNumber1Filled, TbCircleNumber2Filled, TbCircleNumber3Filled } from "react-icons/tb";
-
 import cn from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 
@@ -15,7 +14,6 @@ export default function ButtonWizardComponent() {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
-    // Fungsi untuk mendapatkan panjang div berdasarkan halaman yang aktif
     const updateWidth = () => {
       switch (currentPage) {
         case "data-diri":
@@ -38,22 +36,28 @@ export default function ButtonWizardComponent() {
           }
           break;
         default:
-          setWidth(0); // Default jika halaman tidak diketahui
+          setWidth(0);
           break;
       }
     };
 
-    // Panggil fungsi updateWidth setiap kali currentPage berubah
+    // Update width when currentPage changes
     updateWidth();
+    window.addEventListener("resize", updateWidth);
+
+    return () => window.removeEventListener("resize", updateWidth);
   }, [currentPage]);
 
   return (
-    <div className="w-full bg-white/80 h-14 flex items-center">
-      <div className="flex w-full  text-black/90 absolute z-20">
+    <div className="w-full bg-white/80 h-14 md:h-16 lg:h-14 flex items-center rounded-full overflow-hidden ">
+      <div className="flex w-full text-black/90 absolute z-20 ">
         <div
           onClick={() => setPage("data-diri")}
           ref={page1}
-          className="w-full font-semibold px-3 cursor-pointer flex items-center gap-2"
+          className={cn(
+            "w-full font-semibold px-2 md:px-4 lg:px-3 cursor-pointer flex items-center gap-2 transition-all duration-200",
+            ["data-diri","formulir-registrasi","informasi-kesehatan"].includes(currentPage) ? "text-black" : "text-gray-600 "
+          )}
         >
           <TbCircleNumber1Filled />
           Data Diri
@@ -61,7 +65,10 @@ export default function ButtonWizardComponent() {
         <div
           onClick={() => setPage("formulir-registrasi")}
           ref={page2}
-          className="w-full font-semibold px-3 cursor-pointer flex items-center gap-2"
+          className={cn(
+            "w-full font-semibold px-2 md:px-4 lg:px-3 cursor-pointer flex items-center gap-2 transition-all duration-200",
+            ["informasi-kesehatan","formulir-registrasi"].includes(currentPage) ? "text-black" : "text-gray-600 "
+          )}
         >
           <TbCircleNumber2Filled />
           Formulir Registrasi
@@ -69,20 +76,25 @@ export default function ButtonWizardComponent() {
         <div
           onClick={() => setPage("informasi-kesehatan")}
           ref={page3}
-          className="w-full font-semibold px-3 cursor-pointer flex items-center gap-2"
+          className={cn(
+            "w-full font-semibold px-2 md:px-4 lg:px-3 cursor-pointer flex items-center gap-2 transition-all duration-200",
+            currentPage === "informasi-kesehatan" ? "text-black" : "text-gray-600 "
+          )}
         >
           <TbCircleNumber3Filled />
           Informasi Kesehatan
         </div>
       </div>
       <div
-        className={cn("h-full rounded-r-full duration-200 transition-all ease-in-out", currentPage === "informasi-kesehatan" && 'rounded-r-none')}
+        className={cn(
+          "h-full rounded-r-full duration-200 transition-all ease-in-out",
+          currentPage === "informasi-kesehatan" && "rounded-r-none"
+        )}
         style={{
           width: width,
-          background: "linear-gradient(90deg, #ffd401 0%, #fff0a4 100%)" // Kuning (#ffd401) ke Oranye (#ff7300)
+          background: "linear-gradient(90deg, #ffd401 0%, #fff0a4 100%)",
         }}
       ></div>
-
     </div>
   );
 }

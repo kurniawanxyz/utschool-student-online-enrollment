@@ -1,5 +1,6 @@
+import dynamic from "next/dynamic"
 import BannerComponent from "../fragments/BannerComponent"
-import FormOnlineRegistrationComponent from "../fragments/FormOnlineRegistrationComponent"
+const FormOnlineRegistrationComponent = dynamic(()=>import("../fragments/FormOnlineRegistrationComponent"),{ssr:false})
 
 const OnlineRegistrationPage = () => {
   return (
