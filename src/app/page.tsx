@@ -1,10 +1,5 @@
+import RegistrationFlowPages from "@/components/pages/RegistrationFlowPages";
 
-export default function Home() {
-  return (
-    <main>
-      <h1 className="">
-
-      </h1>
-    </main>
-  );
+export default function RegistrationFlowRoute() {
+  return <RegistrationFlowPages/>
 }

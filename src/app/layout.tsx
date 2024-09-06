@@ -26,7 +26,7 @@ export default function RootLayout({
       >
         <NavbarComponent/>
         <HeaderComponent/>
-        <main className="w-full min-h-screen">
+        <main className="w-full min-h-screen px-20">
           {children}
         </main>
         <FooterComponent/>

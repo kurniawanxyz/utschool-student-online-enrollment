@@ -1,8 +1,5 @@
-import React from 'react'
-
+import OnlineRegistrationPages from "@/components/pages/OnlineRegistrationPages";
 
 export default function page() {
-  return (
-    <div>page</div>
-  )
+  return <OnlineRegistrationPages/>
 }

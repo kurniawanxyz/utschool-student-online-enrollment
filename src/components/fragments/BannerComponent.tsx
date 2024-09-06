@@ -1,0 +1,19 @@
+import React from 'react'
+
+type Props = {
+    title: string
+    description: string
+}
+
+const BannerComponent = ({title,description}: Props) => {
+  return (
+    <article className='w-full p-10 flex flex-col justify-center items-center gap-3 border-b border-black'>
+        <div className='bg-primary flex justify-center items-center p-5 text-black font-bold shadow'>
+            <h1>{title}</h1>
+        </div>
+        <p className='text-black/80 w-2/3 text-center'>{description}</p>
+    </article>
+  )
+}
+
+export default BannerComponent

@@ -1,4 +1,5 @@
 "use client"
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import cn from "@/utils/cn";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,17 +17,21 @@ const listPrimaryNav: LinkNav[] = [
   { text: "Hubungi Kami", url: "/" }
 ];
 
-const listSecondaryNav: LinkNav[] = [
+let listSecondaryNav: LinkNav[] = [
+  { text: "Beranda", url: "/" },
   { text: "Registration Flow", url: "/" },
   { text: "Selection Schedule", url: "/selection-schedule" },
   { text: "Registration Requirement", url: "/registration-requirement" },
   { text: "Online Registration", url: "/online-registration" },
   { text: "Announcement Selection", url: "/announcement-selection" },
+  { text: "Tentang Kami", url: "/" },
+  { text: "Hubungi Kami", url: "/" }
 ];
 
 export function NavbarComponent() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [navbar1Height, setNavbar1Height] = useState(0);
+  const currentBp = useBreakpoint()
   const [activeLinkDimensions, setActiveLinkDimensions] = useState<{ width: number; left: number } | null>(null);
   
   const navbar1Ref = useRef<HTMLDivElement | null>(null);
@@ -63,18 +68,25 @@ export function NavbarComponent() {
   }, [pathNow]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (navbar1Ref.current) {
-        setNavbar1Height(navbar1Ref.current.offsetHeight);
-      }
-    }, 100); // Timeout untuk memastikan semuanya sudah dimuat dengan benar
-    
-    return () => clearTimeout(timer);
-  }, []);
+  const timer = setTimeout(() => {
+    if (navbar1Ref.current) {
+      setNavbar1Height(navbar1Ref.current.offsetHeight);
+    }
+  }, 100); // Timeout untuk memastikan semuanya sudah dimuat dengan benar
   
+  return () => clearTimeout(timer);
+}, []);
+
+if (currentBp !== "sm") {
+  listSecondaryNav = listSecondaryNav.filter(
+    (item: LinkNav) =>
+      !listPrimaryNav.some((item2: LinkNav) => item2.text === item.text)
+  );
+}
 
   console.log('Navbar1 Height:', navbar1Height);
   console.log('Active Link Dimensions:', activeLinkDimensions);
+  console.log(currentBp)
 
   return (
     <nav className='fixed z-10 top-0 w-full'>
@@ -102,7 +114,7 @@ export function NavbarComponent() {
 
       {/* Navbar2 */}
       <div
-        className={`bg-black/90 transition-transform px-20 pt-5`}
+        className={`bg-black/90 transition-transform px-5 md:px-20 pt-5`}
         style={{
           transform: scrollPosition > 100 ? `translateY(-${navbar1Height}px)` : 'translateY(0)',
         }}
