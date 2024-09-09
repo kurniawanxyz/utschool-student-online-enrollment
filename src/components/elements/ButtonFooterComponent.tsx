@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { IoIosArrowUp } from "react-icons/io";
 
@@ -6,7 +6,7 @@ const ButtonFooterComponent = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth" // Menambahkan animasi smooth scroll
+      behavior: "smooth", // Menambahkan animasi smooth scroll
     });
   };
 

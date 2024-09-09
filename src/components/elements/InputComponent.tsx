@@ -1,6 +1,6 @@
 import React from "react";
 
-interface InputComponentProps {
+type InputComponentProps = {
   label: string;
   name: string;
   type?: React.HTMLInputTypeAttribute;
@@ -8,7 +8,7 @@ interface InputComponentProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Optional onChange
   placeholder?: string;
   className?: string;
-}
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 const InputComponent: React.FC<InputComponentProps> = ({
   label,
@@ -18,10 +18,13 @@ const InputComponent: React.FC<InputComponentProps> = ({
   onChange,
   placeholder = "",
   className = "",
+  ...rest
 }) => {
   return (
     <div className={`flex flex-col w-full ${className}`}>
-      <label htmlFor={label} className="text-black mb-1">{label}</label>
+      <label htmlFor={label} className="text-black mb-1">
+        {label}
+      </label>
       <input
         type={type}
         id={label}
@@ -30,6 +33,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
         onChange={onChange} // Only trigger onChange if provided
         placeholder={placeholder}
         className="w-full rounded px-3 py-2 outline-none text-black focus:ring focus:ring-primary"
+        {...rest}
       />
     </div>
   );

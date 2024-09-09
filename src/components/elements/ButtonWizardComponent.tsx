@@ -1,7 +1,11 @@
 "use client";
 
 import { useOnlineRegistration } from "@/stores/useOnlineRegistration";
-import { TbCircleNumber1Filled, TbCircleNumber2Filled, TbCircleNumber3Filled } from "react-icons/tb";
+import {
+  TbCircleNumber1Filled,
+  TbCircleNumber2Filled,
+  TbCircleNumber3Filled,
+} from "react-icons/tb";
 import cn from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 
@@ -30,8 +34,8 @@ export default function ButtonWizardComponent() {
           if (page1.current && page2.current && page3.current) {
             setWidth(
               page1.current.offsetWidth +
-              page2.current.offsetWidth +
-              page3.current.offsetWidth,
+                page2.current.offsetWidth +
+                page3.current.offsetWidth,
             );
           }
           break;
@@ -56,39 +60,49 @@ export default function ButtonWizardComponent() {
           ref={page1}
           className={cn(
             "w-full font-semibold px-2 md:px-4 lg:px-3 cursor-pointer flex items-center gap-2 transition-all duration-200",
-            ["data-diri","formulir-registrasi","informasi-kesehatan"].includes(currentPage) ? "text-black" : "text-gray-600 "
+            [
+              "data-diri",
+              "formulir-registrasi",
+              "informasi-kesehatan",
+            ].includes(currentPage)
+              ? "text-black"
+              : "text-gray-600 ",
           )}
         >
           <TbCircleNumber1Filled />
-          Data Diri
+          <p className="hidden md:inline">Data diri</p>
         </div>
         <div
           onClick={() => setPage("formulir-registrasi")}
           ref={page2}
           className={cn(
             "w-full font-semibold px-2 md:px-4 lg:px-3 cursor-pointer flex items-center gap-2 transition-all duration-200",
-            ["informasi-kesehatan","formulir-registrasi"].includes(currentPage) ? "text-black" : "text-gray-600 "
+            ["informasi-kesehatan", "formulir-registrasi"].includes(currentPage)
+              ? "text-black"
+              : "text-gray-600 ",
           )}
         >
           <TbCircleNumber2Filled />
-          Formulir Registrasi
+          <p className="hidden md:inline">Formulir registrasi</p>
         </div>
         <div
           onClick={() => setPage("informasi-kesehatan")}
           ref={page3}
           className={cn(
             "w-full font-semibold px-2 md:px-4 lg:px-3 cursor-pointer flex items-center gap-2 transition-all duration-200",
-            currentPage === "informasi-kesehatan" ? "text-black" : "text-gray-600 "
+            currentPage === "informasi-kesehatan"
+              ? "text-black"
+              : "text-gray-600 ",
           )}
         >
           <TbCircleNumber3Filled />
-          Informasi Kesehatan
+          <p className="hidden md:inline">Informasi kesehatan</p>
         </div>
       </div>
       <div
         className={cn(
           "h-full rounded-r-full duration-200 transition-all ease-in-out",
-          currentPage === "informasi-kesehatan" && "rounded-r-none"
+          currentPage === "informasi-kesehatan" && "rounded-r-none",
         )}
         style={{
           width: width,

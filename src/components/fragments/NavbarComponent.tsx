@@ -8,7 +8,6 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { LiaTimesSolid } from "react-icons/lia";
 import { HiMiniBars3BottomRight } from "react-icons/hi2";
 
-
 type LinkNav = {
   text: string;
   url: string;
@@ -55,7 +54,7 @@ export function NavbarComponent() {
   useEffect(() => {
     const timer = setTimeout(() => {
       const activeLink = document.querySelector(
-        '[data-active="true"]'
+        '[data-active="true"]',
       ) as HTMLElement;
       if (activeLink) {
         const { width, left } = activeLink.getBoundingClientRect();
@@ -79,12 +78,12 @@ export function NavbarComponent() {
   if (currentBp !== "sm") {
     listSecondaryNav = listSecondaryNav.filter(
       (item: LinkNav) =>
-        !listPrimaryNav.some((item2: LinkNav) => item2.text === item.text)
+        !listPrimaryNav.some((item2: LinkNav) => item2.text === item.text),
     );
   }
 
   return (
-    <nav className="fixed top-0 w-full z-[1000000]">
+    <nav className="fixed top-0 w-full z-[100]">
       {/* Navbar1 */}
       <div
         ref={navbar1Ref}
@@ -93,7 +92,7 @@ export function NavbarComponent() {
           transform:
             scrollPosition > 100
               ? `translateY(-${navbar1Height}px)`
-              : "translateY(0)"
+              : "translateY(0)",
         }}
       >
         <ul className="flex gap-3 text-[11px]">
@@ -112,7 +111,7 @@ export function NavbarComponent() {
           transform:
             scrollPosition > 100
               ? `translateY(-${navbar1Height}px)`
-              : "translateY(0)"
+              : "translateY(0)",
         }}
       >
         <Image
@@ -129,7 +128,11 @@ export function NavbarComponent() {
             className="text-white focus:outline-none"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <LiaTimesSolid size={24} /> : <HiMiniBars3BottomRight size={24} />}
+            {isMenuOpen ? (
+              <LiaTimesSolid size={24} />
+            ) : (
+              <HiMiniBars3BottomRight size={24} />
+            )}
           </button>
         </div>
 
@@ -153,7 +156,7 @@ export function NavbarComponent() {
               style={{
                 width: activeLinkDimensions.width,
                 left: activeLinkDimensions.left,
-                top: 40
+                top: 40,
               }}
             />
           )}
@@ -192,7 +195,7 @@ function ButtonNavigation({
   children,
   href,
   className = "",
-  dataActive
+  dataActive,
 }: ButtonNavigationType) {
   const style = cn(className, "font-bold hover:text-primary");
   return (

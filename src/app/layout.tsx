@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Raleway } from "next/font/google"
+import { Raleway } from "next/font/google";
 import HeaderComponent from "@/components/fragments/HeaderComponent";
 import { NavbarComponent } from "@/components/fragments/NavbarComponent";
 import FooterComponent from "@/components/fragments/FooterComponent";
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const raleway = Raleway({
-  subsets: ["latin"]
-})
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "UTS | ENROLLMENT",
@@ -23,17 +24,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${raleway.className} bg-slate-100 min-h-[200vh]`}
-      >
+      <body className={`${raleway.className} bg-slate-100 min-h-[200vh]`}>
         <NavbarComponent />
         <HeaderComponent />
-        <main className="w-full min-h-screen px-5 md:px-20">
-          {children}
-        </main>
+        <main className="w-full min-h-screen px-5 md:px-20">{children}</main>
         <FooterComponent />
         <Analytics />
         <SpeedInsights />
+        <ToastContainer
+          newestOnTop
+          position="top-right"
+          className="z-[10000]"
+        />
       </body>
     </html>
   );
