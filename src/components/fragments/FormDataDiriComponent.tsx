@@ -39,10 +39,6 @@ export default function FormDataDiriComponent() {
 
   const { dataDiri, setDataDiri, setPage } = useOnlineRegistration();
 
-  const getValue = (name: keyof FormDataDiriType) => {
-    return dataDiri[name];
-  };
-
   async function FormDataDiriService(formdata: FormData) {
     try {
       const payload: FormDataDiriType = {
@@ -88,7 +84,7 @@ export default function FormDataDiriComponent() {
   }, []);
 
   return (
-    <form action={FormDataDiriService} className="w-full flex flex-col gap-3">
+    <form action={FormDataDiriService} className="w-full flex flex-col gap-5">
       <InputComponent
         label="Nama Lengkap"
         name="full_name"
