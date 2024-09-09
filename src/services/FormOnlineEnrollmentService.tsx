@@ -21,7 +21,8 @@ export async function FormDataDiriService(formdata: FormData) {
       id_card: formdata.get("id_card") as string,
       hobby: formdata.get("hobby") as string,
       school_of_origin: formdata.get("school_of_origin") as string,
-      school_type: formdata.get("major") as string,
+      school_type: formdata.get("school_type") as string,
+      major: formdata.get("major") as string,
     };
     const result = FormDataDiriSchema.safeParse(payload);
     if (!result.success) {
