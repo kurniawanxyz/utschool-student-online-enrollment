@@ -27,10 +27,10 @@ const getDataDiriStorageData = (): FormDataDiriType => {
   return storedData ? JSON.parse(storedData) : {}; // Mengembalikan data yang disimpan atau objek kosong
 };
 
-// Fungsi untuk menyimpan data ke localStorage
-const setLocalStorageData = (data: formOnlineregistrationType) => {
-  localStorage.setItem("data", JSON.stringify(data));
-};
+// // Fungsi untuk menyimpan data ke localStorage
+// const setLocalStorageData = (data: formOnlineregistrationType) => {
+//   localStorage.setItem("data", JSON.stringify(data));
+// };
 
 const setDataDiriStorageData = (data: FormDataDiriType) => {
   localStorage.setItem("data-diri", JSON.stringify(data));

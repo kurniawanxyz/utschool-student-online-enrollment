@@ -10,6 +10,7 @@ const FormInformasiKesehatanComponent = dynamic(() => import("./FormInformasiKes
 
 export default function FormOnlineRegistrationComponent() {
   const { currentPage } = useOnlineRegistration()
+  
   return (
     <div className="relative min-h-[150vh] mt-5 py-5">
       <Image
