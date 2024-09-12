@@ -4,13 +4,9 @@ export const FormOnlineEnrollmentSchema = z.object({
   training_program_id: z
     .string()
     .uuid({ message: "ID program pelatihan tidak valid" }),
-  learning_pattern: z.string(),
-  is_willing_to_relocate: z
-    .union([z.boolean(), z.number()])
-    .transform((val) => !!val), // Converts 0 or 1 to boolean
-  compliance_agreement: z
-    .union([z.boolean(), z.number()])
-    .transform((val) => !!val), // Converts 0 atau 1 ke boolean
+  learning_pattern: z.string().min(1,"Pola Pembelajaran wajib diisi minimal 1 karakter").max(500,"Form pola pembelajaran maksimal 500 karakter"),
+  is_willing_to_relocate: z.enum(["1","0"]),
+  compliance_agreement: z.enum(["1","0"]),
   full_name: z
     .string()
     .nonempty({ message: "Nama lengkap tidak boleh kosong" }),
@@ -54,6 +50,7 @@ export const FormOnlineEnrollmentSchema = z.object({
   major: z.string().nonempty({
     message: "Jurusan sekolah tidak boleh kosong",
   }), // Converts 0 atau 1 ke boolean
+  motivation: z.string().min(1,"Form inputan motivasi minimal 1 karakter").max(500,"Form input motivasi maksimal 500 karatker")
 });
 
 export const FormDataDiriSchema = FormOnlineEnrollmentSchema.pick({
@@ -67,8 +64,18 @@ export const FormDataDiriSchema = FormOnlineEnrollmentSchema.pick({
   id_card: true,
   hobby: true,
   school_of_origin: true,
-  school_type: true, // Assuming "jurusan name" refers to "school_type"
+  school_type: true,
   major: true,
 });
 
+export const FormRegistrasiOnlineSchema = FormOnlineEnrollmentSchema.pick({
+  learning_pattern: true,
+  is_willing_to_relocate: true,
+  compliance_agreement: true,
+  training_program_id: true,
+  learning_point_id: true,
+  sobat_school_id: true,
+  motivation: true
+})
 export type FormDataDiriType = z.infer<typeof FormDataDiriSchema>;
+export type FormRegistrasiOnline = z.infer<typeof FormRegistrasiOnlineSchema>;

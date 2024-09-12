@@ -1,4 +1,4 @@
-import { FormDataDiriType } from "@/schemas/FormDataDiriSchema";
+import { FormDataDiriType, FormRegistrasiOnline } from "@/schemas/FormDataDiriSchema";
 import { create } from "zustand";
 
 type formOnlineregistrationType = {
@@ -10,10 +10,12 @@ type formPage = "data-diri" | "formulir-registrasi" | "informasi-kesehatan";
 type useOnlineRegistrationType = {
   data: formOnlineregistrationType;
   dataDiri: FormDataDiriType;
+  dataRegistration: FormRegistrasiOnline;
   setData: (data: formOnlineregistrationType) => void;
   setDataDiri: (data: FormDataDiriType) => void;
   currentPage: formPage;
   setPage: (page: formPage) => void;
+  setDataRegistration: (data: FormRegistrasiOnline) => void;
 };
 
 // Fungsi untuk mengambil data dari localStorage
@@ -27,6 +29,11 @@ const getDataDiriStorageData = (): FormDataDiriType => {
   return storedData ? JSON.parse(storedData) : {}; // Mengembalikan data yang disimpan atau objek kosong
 };
 
+const getDataRegistration = (): FormRegistrasiOnline => {
+  const storedData = localStorage.getItem("data-registration");
+  return storedData ? JSON.parse(storedData) : {}; // Mengembalikan data yang disimpan atau objek kosong
+};
+
 // // Fungsi untuk menyimpan data ke localStorage
 // const setLocalStorageData = (data: formOnlineregistrationType) => {
 //   localStorage.setItem("data", JSON.stringify(data));
@@ -34,6 +41,10 @@ const getDataDiriStorageData = (): FormDataDiriType => {
 
 const setDataDiriStorageData = (data: FormDataDiriType) => {
   localStorage.setItem("data-diri", JSON.stringify(data));
+};
+
+const setRegistrationStorageData = (data: FormRegistrasiOnline) => {
+  localStorage.setItem("data-registration", JSON.stringify(data));
 };
 
 // Fungsi untuk mengambil currentPage dari localStorage dengan validasi tipe
@@ -58,6 +69,11 @@ export const useOnlineRegistration = create<useOnlineRegistrationType>(
     data: getLocalStorageData(), // Inisialisasi data dari localStorage
     currentPage: getCurrentPage(), // Inisialisasi currentPage dari localStorage
     dataDiri: getDataDiriStorageData(),
+    dataRegistration: getDataRegistration(),
+    setDataRegistration : (data)=> {
+      set({ dataRegistration: data });
+      setRegistrationStorageData(data);
+    },
     setPage: (page: formPage) => {
       set({ currentPage: page });
       localStorage.setItem("current-page", page);

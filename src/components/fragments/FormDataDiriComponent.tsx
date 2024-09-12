@@ -61,7 +61,6 @@ export default function FormDataDiriComponent() {
         result.error.issues.forEach((error: ZodIssue) => {
           // Extract path and message from the error
           const message = error.message;
-          27;
           console.error(error);
 
           // Display the error using toast
