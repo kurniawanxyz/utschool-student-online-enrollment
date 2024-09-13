@@ -72,74 +72,73 @@ export default function FormInformasiKesehatanComponent() {
       });
       return false;
     }
-    toast.success("Pengisian data diri berhasil dilakukan");
     setDataInformasiKesehatan(result.data);
 
     if (formData.get("button") === "selanjutnya") {
-      const dataDiri = formData.get("data-diri");
-      const dataRegistrasi = formData.get("data-registration");
-      const dataInformasiKesehatan = formData.get("data-informasi-kesehatan");
+      const dataDiri = localStorage.getItem("data-diri") as string;
+      const dataRegistrasi = localStorage.getItem("data-registration") as string;
+      const dataInformasiKesehatan = localStorage.getItem("data-informasi-kesehatan") as string;
       const studentPhoto = formData.get("student_photo");
       const diplomaPhoto = formData.get("diploma_photo");
       const identityPhoto = formData.get("identity_photo");
 
       // Memastikan semua data ada
-      if (dataDiri && dataRegistrasi && dataInformasiKesehatan) {
-        let parsedDataDiri = {};
-        let parsedDataRegistrasi = {};
-        let parsedDataInformasiKesehatan = {};
+      // Parsing hanya jika tipe data string
+      let parsedDataDiri = JSON.parse(dataDiri);
+      let parsedDataRegistrasi = JSON.parse(dataRegistrasi);
+      let parsedDataInformasiKesehatan = JSON.parse(dataInformasiKesehatan);
 
-        // Parsing hanya jika tipe data string
-        if (typeof dataDiri === 'string') {
-          parsedDataDiri = JSON.parse(dataDiri);
-        }
-        if (typeof dataRegistrasi === 'string') {
-          parsedDataRegistrasi = JSON.parse(dataRegistrasi);
-        }
-        if (typeof dataInformasiKesehatan === 'string') {
-          parsedDataInformasiKesehatan = JSON.parse(dataInformasiKesehatan);
-        }
+      // Menggabungkan data JSON
+      const combinedData = {
+        ...parsedDataDiri,
+        ...parsedDataRegistrasi,
+        ...parsedDataInformasiKesehatan
+      };
 
-        // Menggabungkan data JSON
-        const combinedData = {
-          ...parsedDataDiri,
-          ...parsedDataRegistrasi,
-          ...parsedDataInformasiKesehatan
-        };
+      // Membuat FormData baru untuk mengirim file dan data lainnya
+      const formDataToSend = new FormData();
+      Object.entries(combinedData).forEach(([key, value]) => {
+        console.log(key, value)
+        formDataToSend.append(key, String(value))
+      })
 
-        // Membuat FormData baru untuk mengirim file dan data lainnya
-        const formDataToSend = new FormData();
 
-        // Menambahkan data JSON ke dalam FormData
-        formDataToSend.append('data', JSON.stringify(combinedData));
+      console.log({ combinedData })
 
-        // Menambahkan file ke dalam FormData (jika ada)
-        if (studentPhoto instanceof File) {
-          formDataToSend.append('student_photo', studentPhoto);
-        }
-        if (diplomaPhoto instanceof File) {
-          formDataToSend.append('diploma_photo', diplomaPhoto);
-        }
-        if (identityPhoto instanceof File) {
-          formDataToSend.append('identity_photo', identityPhoto);
-        }
+      // Menambahkan data JSON ke dalam FormData
 
-        const res = await fd("registration", {
-          body: formDataToSend
-        }, true)
+      // Menambahkan file ke dalam FormData (jika ada)
+      formDataToSend.append('student_photo', studentPhoto as Blob);
+      formDataToSend.append('diploma_photo', diplomaPhoto as Blob);
+      formDataToSend.append('identity_photo', identityPhoto as Blob);
+      console.log(formDataToSend.get("student_photo"));
+      formDataToSend.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+      const res = await fd("registration", {
+        method: "POST",
+        body: formDataToSend
+      }, true)
+      console.log(res)
 
-        if (!res.head.success) {
-          res.data.error.issues.forEach((error: ZodIssue) => {
-            const message = error.message;
-            console.error(error);
-            toast.error(`${message}`);
-          });
-          return false;
+      if (!res.meta.success) {
+        if (typeof res.data === "string") {
+          toast.error(res.data)
+        } else {
+          for (const key in res.data) {
+            if (res.data.hasOwnProperty(key)) {
+              const element = res.data[key][0];
+              console.log(element)
+              toast.error(element)
+            }
+          }
         }
 
-        toast.success("Berhasil melakukan pendaftaran")
-        router.push("/")
+        return false;
       }
+
+      toast.success("Berhasil melakukan pendaftaran")
+      router.push("/")
     }
   }
 
