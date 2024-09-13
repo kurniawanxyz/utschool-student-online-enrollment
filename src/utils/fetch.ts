@@ -5,21 +5,21 @@ export type ResponseType = {
     head: {
         success: boolean,
         message: string,
-        status : number 
+        status: number
     },
     data: any
 }
 
-export async function fd(url: string, options: RequestInit = {},isUploadFile:boolean = false) {
+export async function fd(url: string, options: RequestInit = {}, isUploadFile: boolean = false): Promise<ResponseType> {
     let defaultHeaders
-    if(!isUploadFile){
-         defaultHeaders = {
-            'Content-Type': 'application/json',
-            'x-api-key': process.env.NEXT_PUBLIC_API_KEY as string   
-        };
-    }else{
+    if (!isUploadFile) {
         defaultHeaders = {
-         'x-api-key': process.env.NEXT_PUBLIC_API_KEY as string   
+            'Content-Type': 'application/json',
+            'x-api-key': process.env.NEXT_PUBLIC_API_KEY as string
+        };
+    } else {
+        defaultHeaders = {
+            'x-api-key': process.env.NEXT_PUBLIC_API_KEY as string
         }
     }
 

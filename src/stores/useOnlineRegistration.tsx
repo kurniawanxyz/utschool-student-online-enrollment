@@ -1,4 +1,4 @@
-import { FormDataDiriType, FormRegistrasiOnline } from "@/schemas/FormDataDiriSchema";
+import { FormDataDiriType, FormInfromasiKesehatanType, FormRegistrasiOnline } from "@/schemas/FormDataDiriSchema";
 import { create } from "zustand";
 
 type formOnlineregistrationType = {
@@ -11,6 +11,8 @@ type useOnlineRegistrationType = {
   data: formOnlineregistrationType;
   dataDiri: FormDataDiriType;
   dataRegistration: FormRegistrasiOnline;
+  dataInformasiKesehatan: FormInfromasiKesehatanType,
+  setDataInformasiKesehatan: (data: FormInfromasiKesehatanType) => void;
   setData: (data: formOnlineregistrationType) => void;
   setDataDiri: (data: FormDataDiriType) => void;
   currentPage: formPage;
@@ -34,6 +36,11 @@ const getDataRegistration = (): FormRegistrasiOnline => {
   return storedData ? JSON.parse(storedData) : {}; // Mengembalikan data yang disimpan atau objek kosong
 };
 
+const getDataInfromasiKesehatan = (): FormInfromasiKesehatanType => {
+  const storedData = localStorage.getItem("data-informasi-kesehatan");
+  return storedData ? JSON.parse(storedData) : {}; // Mengembalikan data yang disimpan atau objek kosong
+};
+
 // // Fungsi untuk menyimpan data ke localStorage
 // const setLocalStorageData = (data: formOnlineregistrationType) => {
 //   localStorage.setItem("data", JSON.stringify(data));
@@ -45,6 +52,10 @@ const setDataDiriStorageData = (data: FormDataDiriType) => {
 
 const setRegistrationStorageData = (data: FormRegistrasiOnline) => {
   localStorage.setItem("data-registration", JSON.stringify(data));
+};
+
+const setInformasiKesehatan = (data: FormInfromasiKesehatanType) => {
+  localStorage.setItem("data-informasi-kesehatan", JSON.stringify(data));
 };
 
 // Fungsi untuk mengambil currentPage dari localStorage dengan validasi tipe
@@ -62,6 +73,8 @@ const getCurrentPage = (): formPage => {
     : "data-diri";
 };
 
+
+
 // Definisikan store menggunakan Zustand
 export const useOnlineRegistration = create<useOnlineRegistrationType>(
   (set, get) => ({
@@ -70,10 +83,16 @@ export const useOnlineRegistration = create<useOnlineRegistrationType>(
     currentPage: getCurrentPage(), // Inisialisasi currentPage dari localStorage
     dataDiri: getDataDiriStorageData(),
     dataRegistration: getDataRegistration(),
-    setDataRegistration : (data)=> {
+    dataInformasiKesehatan: getDataInfromasiKesehatan(),
+    setDataInformasiKesehatan: (data) => {
+      set({ dataInformasiKesehatan: data })
+      setInformasiKesehatan(data)
+    },
+    setDataRegistration: (data) => {
       set({ dataRegistration: data });
       setRegistrationStorageData(data);
     },
+
     setPage: (page: formPage) => {
       set({ currentPage: page });
       localStorage.setItem("current-page", page);
