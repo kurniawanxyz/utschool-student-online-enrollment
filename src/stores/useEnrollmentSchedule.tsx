@@ -101,10 +101,8 @@ export const useEnrollmentSchedule = create<useEnrollmentScheduleType>((set, get
   setLearningPoint: (training_program_id) => {
     const { schedule } = get()
     if (schedule) {
-      const learning_point = schedule?.map((item:Schedule)=>{
-        if(item.training_program_id === training_program_id){
+      const learning_point = schedule?.filter((item)=>item.training_program_id === training_program_id).map((item:Schedule)=>{
           return item.learning_point;
-        }
       })
       set({
         learning_point
