@@ -1,15 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { useEffect, useState } from "react";
 import RadioButtonGroupComponent, { RadioOption } from "../elements/RadioButtonGroupComponent";
 import TextArea from "../elements/TextAreaComponent";
-import { ScheduleType, TrainingProgram, useEnrollmentSchedule } from "@/stores/useEnrollmentSchedule";
+import { LearningPoint, ScheduleType, TrainingProgram, useEnrollmentSchedule } from "@/stores/useEnrollmentSchedule";
 import { FormRegistrasiOnline, FormRegistrasiOnlineSchema } from "@/schemas/FormDataDiriSchema";
 import { ZodIssue } from "zod";
 import { toast } from "react-toastify";
 import { useOnlineRegistration } from "@/stores/useOnlineRegistration";
 
 export default function FormRegistrationComponent() {
+  const [lp,setLp] = useState<LearningPoint[]>([]);
   const confirm: RadioOption[] = [
     {
       label: "Iya",
@@ -23,10 +25,14 @@ export default function FormRegistrationComponent() {
 
   const [placementQuestion, setPlacementQuestion] = useState<string>();
   const [schoolRegulationQuestion, setSchoolRegulationQuestion] = useState<string>();
-  const { setSchedule, sobat, setSobat, learning_point, training_program, setLearningPoint } = useEnrollmentSchedule();
+  const { schedule ,setSchedule, sobat, setSobat, learning_point, training_program, setLearningPoint } = useEnrollmentSchedule();
   const { dataRegistration, setDataRegistration, setPage } = useOnlineRegistration();
   const [trainingProgramSelected, setTrainingProgramSelected] = useState<string | null>(null);
   const [selectScheduleId, setSelectScheduleId] = useState<string | null>(null);
+
+  useEffect(()=>{
+    setLp([]);
+  },[])
 
   useEffect(()=>{
     const test = localStorage.getItem("data-diri")
@@ -50,10 +56,13 @@ export default function FormRegistrationComponent() {
   }, [setSchedule]);
 
   useEffect(() => {
-    if (trainingProgramSelected) {
-      setLearningPoint(trainingProgramSelected);
+    if (trainingProgramSelected && schedule) {
+      const data = schedule.filter((item)=>item.training_program_id === trainingProgramSelected).map((item)=>item.learning_point)
+      // setLearningPoint(trainingProgramSelected);
+      setLp(data as LearningPoint[])
     }
   }, [trainingProgramSelected]);
+  console.log({lp})
 
   useEffect(() => {
     if (selectScheduleId) {
@@ -152,7 +161,7 @@ export default function FormRegistrationComponent() {
         </select>
       </div>
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="w-full grid grid-cols-1 md:grid-cols-1 gap-5">
         <div className="flex flex-col">
           <label className="text-sm font-medium text-black mb-1">Pilih Lokasi Pelatihan</label>
           <select
@@ -161,7 +170,7 @@ export default function FormRegistrationComponent() {
             onChange={(e) => setSelectScheduleId(e.target.value)}
             className="block w-full px-4 py-2 text-black text-sm capitalize rounded-md shadow-sm focus:ring-primary focus:border-primary"
           >
-            {learning_point && learning_point.map((item) => (
+            {lp && lp.map((item) => (
               <option className="text-black capitalize" key={item.id} value={item.id}>
                 UT School {item.name}
               </option>

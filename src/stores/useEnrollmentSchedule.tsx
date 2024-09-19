@@ -83,7 +83,7 @@ export const useEnrollmentSchedule = create<useEnrollmentScheduleType>((set, get
   sobat: [],
   setSchedule: async () => {
     const res = await handleGet();
-    const data: ScheduleType = await res.data
+    const data: ScheduleType = await res?.data
     if (data) {
       const idTracker = new Set()
       const learning_point = data.schedules?.reduce((acc, item: Schedule) => {
@@ -101,8 +101,10 @@ export const useEnrollmentSchedule = create<useEnrollmentScheduleType>((set, get
   setLearningPoint: (training_program_id) => {
     const { schedule } = get()
     if (schedule) {
-      const learning_point = schedule?.filter((item) => item.training_program_id === training_program_id).map(item => {
-        return item.learning_point
+      const learning_point = schedule?.map((item:Schedule)=>{
+        if(item.training_program_id === training_program_id){
+          return item.learning_point;
+        }
       })
       set({
         learning_point

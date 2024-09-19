@@ -10,7 +10,7 @@ import cn from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 
 export default function ButtonWizardComponent() {
-  const { currentPage, setPage } = useOnlineRegistration();
+  const { currentPage } = useOnlineRegistration();
   const page1 = useRef<HTMLDivElement | null>(null);
   const page2 = useRef<HTMLDivElement | null>(null);
   const page3 = useRef<HTMLDivElement | null>(null);

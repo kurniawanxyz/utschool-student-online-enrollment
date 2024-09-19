@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useState } from "react";
 import InputComponent from "../elements/InputComponent";
@@ -5,7 +6,7 @@ import RadioButtonGroupComponent, {
   RadioOption,
 } from "../elements/RadioButtonGroupComponent";
 import TextArea from "../elements/TextAreaComponent";
-import { FormDataDiriType, FormInformasiKesehatanSchema } from "@/schemas/FormDataDiriSchema";
+import { FormInformasiKesehatanSchema } from "@/schemas/FormDataDiriSchema";
 import { ZodIssue } from "zod";
 import { toast } from "react-toastify";
 import { useOnlineRegistration } from "@/stores/useOnlineRegistration";
@@ -84,9 +85,9 @@ export default function FormInformasiKesehatanComponent() {
 
       // Memastikan semua data ada
       // Parsing hanya jika tipe data string
-      let parsedDataDiri = JSON.parse(dataDiri);
-      let parsedDataRegistrasi = JSON.parse(dataRegistrasi);
-      let parsedDataInformasiKesehatan = JSON.parse(dataInformasiKesehatan);
+      const parsedDataDiri = JSON.parse(dataDiri);
+      const parsedDataRegistrasi = JSON.parse(dataRegistrasi);
+      const parsedDataInformasiKesehatan = JSON.parse(dataInformasiKesehatan);
 
       // Menggabungkan data JSON
       const combinedData = {
