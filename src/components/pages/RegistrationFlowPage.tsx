@@ -9,7 +9,7 @@ export default function RegistrationFlowPage() {
         title="Alur Pendaftaran"
         description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere earum alias hic, accusantium voluptatum minus natus vel. Cupiditate, voluptates autem."
       />
-      <div className="grid grid-cols-2 gap-5 p-5">
+      <div className="grid grid-cols-1  md:grid-cols-2 gap-5 p-5">
         <div className="bg-white shadow rounded p-5">
           <h2 className="text-black text-xl font-bold">Ketarangan</h2>
           <ol className="text-black text-md mt-3 ms-5 list-decimal list-outside space-y-2">
