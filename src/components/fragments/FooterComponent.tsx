@@ -8,36 +8,36 @@ type LinkNav = {
   url: string;
 };
 
-const listSitemap: LinkNav[] = [
-  {
-    text: "Beranda",
-    url: "#"
-  },
-  {
-    text: "Tentang",
-    url: "#"
-  },
-  {
-    text: "Aktifitas & Berita",
-    url: "#"
-  },
-  {
-    text: "Tentang",
-    url: "#"
-  },
-  {
-    text: "Alumni",
-    url: "#"
-  },
-  {
-    text: "Training Program",
-    url: "#"
-  },
-  {
-    text: "Patner Industri",
-    url: "#"
-  },
-]
+// const listSitemap: LinkNav[] = [
+//   {
+//     text: "Beranda",
+//     url: "#"
+//   },
+//   {
+//     text: "Tentang",
+//     url: "#"
+//   },
+//   {
+//     text: "Aktifitas & Berita",
+//     url: "#"
+//   },
+//   {
+//     text: "Tentang",
+//     url: "#"
+//   },
+//   {
+//     text: "Alumni",
+//     url: "#"
+//   },
+//   {
+//     text: "Training Program",
+//     url: "#"
+//   },
+//   {
+//     text: "Patner Industri",
+//     url: "#"
+//   },
+// ]
 const listHelp: LinkNav[] = [
   {
     text: "Dukungan Pelanggan",
