@@ -69,14 +69,14 @@ const FooterComponent = () => {
               className="w-32 md:w-44"
             />
             <p className="text-sm mt-2 w-full md:w-2/3 text-gray-300">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum officiis facilis temporibus, reiciendis doloremque corrupti soluta ullam cumque dolore repudiandae?
+            UT School determined to be the best educational institution for Operators and Mechanics of heavy equipment in the world. With complete facilities and instructors are competent and experienced, we are ready to educate and produce qualified human resources, professional and international perspective.
             </p>
           </div>
 
           {/* Links dan Informasi Kontak */}
-          <div className="md:w-2/4 w-full flex flex-col md:flex-row justify-between gap-8">
+          <div className="md:w-2/4 w-full flex flex-col md:flex-row justify-center gap-8">
             {/* Bagian Situs Web */}
-            <div className="flex-1">
+            {/* <div className="flex-1">
               <h2 className="text-xl font-bold mb-2 text-white">Situs Web</h2>
               <ul className="text-sm flex flex-col gap-1 text-gray-400">
                 {listSitemap.map((item: LinkNav, index) => (
@@ -85,7 +85,7 @@ const FooterComponent = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             {/* Bagian Bantuan */}
             <div className="flex-1">
@@ -102,7 +102,7 @@ const FooterComponent = () => {
             {/* Bagian Hubungi Kami */}
             <div className="flex-1">
               <h2 className="text-xl font-bold mb-2 text-white">Hubungi Kami</h2>
-              <h3 className="text-lg font-semibold mb-1 text-white">UTSCHOOL</h3>
+              {/* <h3 className="text-lg font-semibold mb-1 text-white">UTSCHOOL</h3> */}
               <p className="text-[10px] leading-relaxed text-gray-400">
                 Jl. Raya Bekasi KM. 22<br />
                 Jakarta Timur 13910, Indonesia<br />

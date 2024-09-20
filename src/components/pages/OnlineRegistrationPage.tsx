@@ -1,18 +1,22 @@
-"use client"
-import dynamic from "next/dynamic"
-import BannerComponent from "../fragments/BannerComponent"
-const FormOnlineRegistrationComponent = dynamic(()=>import("../fragments/FormOnlineRegistrationComponent"),{ssr:false})
+"use client";
+import dynamic from "next/dynamic";
+import BannerComponent from "../fragments/BannerComponent";
+const FormOnlineRegistrationComponent = dynamic(
+  () => import("../fragments/FormOnlineRegistrationComponent"),
+  { ssr: false }
+);
 
 const OnlineRegistrationPage = () => {
   return (
     <>
       <BannerComponent
         title="Online Registration"
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere earum alias hic, accusantium voluptatum minus natus vel. Cupiditate, voluptates autem."
+        description="Ikuti langkah langkah dan ketentuan berikut untuk melakukan pendaftaran"
       />
+
       <FormOnlineRegistrationComponent />
     </>
-  )
-}
+  );
+};
 
-export default OnlineRegistrationPage
+export default OnlineRegistrationPage;
