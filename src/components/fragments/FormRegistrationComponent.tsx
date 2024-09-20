@@ -12,6 +12,8 @@ import { useOnlineRegistration } from "@/stores/useOnlineRegistration";
 
 export default function FormRegistrationComponent() {
   const [lp,setLp] = useState<LearningPoint[]>([]);
+  const [currentSelect,setCurrentSelect] = useState<"NONE" | "ONE" | "ALL">("NONE")
+  const [selectedLp,setSelectedLp] = useState<string>("default");
   const confirm: RadioOption[] = [
     {
       label: "Iya",
@@ -150,7 +152,12 @@ export default function FormRegistrationComponent() {
         <select
           defaultValue={trainingProgramSelected ?? ""}
           name="training_program_id"
-          onChange={(e) => setTrainingProgramSelected(e.target.value)}
+          onChange={(e) => {
+            setTrainingProgramSelected(e.target.value)
+            setCurrentSelect("ONE")
+            setSelectedLp("default");
+          }
+          }
           className="block w-full px-4 py-2 text-black capitalize text-sm rounded-md shadow-sm focus:ring-primary focus:border-primary"
         >
           {training_program && training_program.map((item: TrainingProgram) => (
@@ -162,34 +169,47 @@ export default function FormRegistrationComponent() {
       </div>
 
       <div className="w-full grid grid-cols-1 md:grid-cols-1 gap-5">
-        <div className="flex flex-col">
+        <div className={`flex flex-col ${currentSelect != "NONE" ?'': 'hidden'}`}>
           <label className="text-sm font-medium text-black mb-1">Pilih Lokasi Pelatihan</label>
           <select
             name="learning_point_id"
-            defaultValue={selectScheduleId ?? ""}
-            onChange={(e) => setSelectScheduleId(e.target.value)}
+            defaultValue={selectedLp}
+            onChange={(e) =>{
+              setSelectedLp(e.target.value)
+              setSelectScheduleId(e.target.value)
+              setCurrentSelect("ALL")
+            }
+            }
             className="block w-full px-4 py-2 text-black text-sm capitalize rounded-md shadow-sm focus:ring-primary focus:border-primary"
           >
+            <option value="default" disabled>Pilih lokasi pelatihan</option>
             {lp && lp.map((item) => (
               <option className="text-black capitalize" key={item.id} value={item.id}>
                 UT School {item.name}
               </option>
             ))}
+            {
+              lp.length < 1 && <option value="">Tidak ada lokasi pelatihan</option>
+            }
           </select>
         </div>
 
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-black mb-1">Pilih Lokasi Ujian</label>
+        <div className={`flex flex-col ${currentSelect != "ALL" && 'hidden'}`}>
+          <label className={`text-sm font-medium text-black mb-1`}>Pilih Lokasi Ujian</label>
           <select
             name="sobat_school_id"
-            defaultValue={dataRegistration?.sobat_school_id ?? ""}
+            defaultValue={dataRegistration?.sobat_school_id ?? "default"}
             className="block w-full px-4 py-2 text-black text-sm capitalize rounded-md shadow-sm focus:ring-primary focus:border-primary"
           >
+            <option value="default" selected disabled>Pilih lokasi ujian</option>
             {sobat && sobat.map((item) => (
               <option className="text-black capitalize" key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
+            {
+              sobat?.length < 1 && <option value="">Tidak ada lokasi ujian</option>
+            }
           </select>
         </div>
       </div>

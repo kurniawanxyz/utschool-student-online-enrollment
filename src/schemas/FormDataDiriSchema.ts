@@ -4,7 +4,10 @@ export const FormOnlineEnrollmentSchema = z.object({
   training_program_id: z
     .string()
     .uuid({ message: "ID program pelatihan tidak valid" }),
-  learning_pattern: z.string().min(1, "Pola Pembelajaran wajib diisi minimal 1 karakter").max(500, "Form pola pembelajaran maksimal 500 karakter"),
+  learning_pattern: z
+    .string()
+    .min(1, "Pola Pembelajaran wajib diisi minimal 1 karakter")
+    .max(500, "Form pola pembelajaran maksimal 500 karakter"),
   is_willing_to_relocate: z.enum(["1", "0"]),
   compliance_agreement: z.enum(["1", "0"]),
   full_name: z
@@ -32,7 +35,7 @@ export const FormOnlineEnrollmentSchema = z.object({
   learning_point_id: z
     .string()
     .uuid({ message: "ID titik belajar tidak valid" }),
-  past_illnesses: z.string().optional(),  // Uncomment if you want to add this field
+  past_illnesses: z.string().optional(), // Uncomment if you want to add this field
   weight: z.string().regex(/^\d+kg$/, {
     message: "Format berat badan tidak valid, contoh: '70kg'",
   }),
@@ -48,23 +51,35 @@ export const FormOnlineEnrollmentSchema = z.object({
   major: z.string().nonempty({
     message: "Jurusan sekolah tidak boleh kosong",
   }), // Converts 0 atau 1 ke boolean
-  motivation: z.string().min(1, "Form inputan motivasi minimal 1 karakter").max(500, "Form input motivasi maksimal 500 karatker"),
+  motivation: z
+    .string()
+    .min(1, "Form inputan motivasi minimal 1 karakter")
+    .max(500, "Form input motivasi maksimal 500 karatker"),
   additional_information: z.string().optional(),
-  student_photo: z.instanceof(File).refine((file) => file.type.startsWith("image/"), {
-    message: "File harus berupa gambar"
-  }).refine((file) => file.size <= 10 * 1024 * 1024, {
-    message: "Ukuran file foto maskimal 10 MB"
-  }),
-  diploma_photo: z.instanceof(File).refine((file) => file.type.startsWith("image/"), {
-    message: "File harus berupa gambar"
-  }).refine((file) => file.size <= 10 * 1024 * 1024, {
-    message: "Ukuran foto diploma maskimal 10 MB"
-  }),
-  identity_photo: z.instanceof(File).refine((file) => file.type.startsWith("image/"), {
-    message: "File harus berupa gambar"
-  }).refine((file) => file.size <= 10 * 1024 * 1024, {
-    message: "Ukuran file KTP maskimal 10 MB"
-  }),
+  student_photo: z
+    .instanceof(File)
+    .refine((file) => file.type.startsWith("image/"), {
+      message: "File harus berupa gambar",
+    })
+    .refine((file) => file.size <= 10 * 1024 * 1024, {
+      message: "Ukuran file foto maskimal 10 MB",
+    }),
+  diploma_photo: z
+    .instanceof(File)
+    .refine((file) => file.type.startsWith("image/"), {
+      message: "File harus berupa gambar",
+    })
+    .refine((file) => file.size <= 10 * 1024 * 1024, {
+      message: "Ukuran foto diploma maskimal 10 MB",
+    }),
+  identity_photo: z
+    .instanceof(File)
+    .refine((file) => file.type.startsWith("image/"), {
+      message: "File harus berupa gambar",
+    })
+    .refine((file) => file.size <= 10 * 1024 * 1024, {
+      message: "Ukuran file KTP maskimal 10 MB",
+    }),
 });
 
 export const FormDataDiriSchema = FormOnlineEnrollmentSchema.pick({
@@ -89,8 +104,8 @@ export const FormRegistrasiOnlineSchema = FormOnlineEnrollmentSchema.pick({
   training_program_id: true,
   learning_point_id: true,
   sobat_school_id: true,
-  motivation: true
-})
+  motivation: true,
+});
 
 export const FormInformasiKesehatanSchema = FormOnlineEnrollmentSchema.pick({
   past_illnesses: true,
@@ -104,8 +119,10 @@ export const FormInformasiKesehatanSchema = FormOnlineEnrollmentSchema.pick({
   student_photo: true,
   diploma_photo: true,
   identity_photo: true,
-})
+});
 
 export type FormDataDiriType = z.infer<typeof FormDataDiriSchema>;
 export type FormRegistrasiOnline = z.infer<typeof FormRegistrasiOnlineSchema>;
-export type FormInfromasiKesehatanType = z.infer<typeof FormInformasiKesehatanSchema>;
+export type FormInfromasiKesehatanType = z.infer<
+  typeof FormInformasiKesehatanSchema
+>;

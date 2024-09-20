@@ -138,7 +138,12 @@ export default function FormInformasiKesehatanComponent() {
         return false;
       }
 
+      localStorage.removeItem("data-diri")
+      localStorage.removeItem("data-registration")
+      localStorage.removeItem("data-informasi-kesehatan")
+
       toast.success("Berhasil melakukan pendaftaran")
+      router.refresh()
       router.push("/")
     }
   }

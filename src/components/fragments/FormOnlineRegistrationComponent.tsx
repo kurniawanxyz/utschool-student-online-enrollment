@@ -20,7 +20,7 @@ export default function FormOnlineRegistrationComponent() {
         height={1000}
         className="absolute top-0 bottom-0 left-0 right-0 w-full h-full"
       />
-      <div className="w-3/4 mx-auto mt-20 min-h-[50vh] z-10  rounded-md shadow-inner shadow-white bg-white/30  backdrop-blur-lg overflow-hidden p-10">
+      <div className="w-3/4 mx-auto mt-20 min-h-[50vh] z-10  rounded-md shadow-inner shadow-white bg-white/30  backdrop-blur-lg overflow-hidden p-5 md:p-10">
         <h2 className="text-2xl text-center font-extrabold text-black">Form Pendaftaran Siswa</h2>
         <ButtonWizardComponent />
         <div className="z-20 w-full mt-10">
