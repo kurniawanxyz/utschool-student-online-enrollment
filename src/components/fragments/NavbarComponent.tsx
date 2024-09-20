@@ -82,12 +82,19 @@ export function NavbarComponent() {
     );
   }
 
+  const style2 = currentBp !== "sm" ? {
+    transform: 
+      scrollPosition > 100
+        ? `translateY(-${navbar1Height}px)`
+        : "translateY(0)",
+  } : {}
+
   return (
     <nav className="fixed top-0 w-full z-[100]">
       {/* Navbar1 */}
       <div
         ref={navbar1Ref}
-        className="bg-black transition-transform py-1 flex items-center justify-end px-5 lg:px-20"
+        className="bg-black transition-transform py-1 hidden md:flex items-center justify-end px-5 lg:px-20 "
         style={{
           transform:
             scrollPosition > 100
@@ -107,12 +114,7 @@ export function NavbarComponent() {
       {/* Navbar2 */}
       <div
         className="bg-black/90 transition-transform px-5 md:px-20 py-3 flex items-center justify-between"
-        style={{
-          transform:
-            scrollPosition > 100
-              ? `translateY(-${navbar1Height}px)`
-              : "translateY(0)",
-        }}
+        style={style2}
       >
         <Image
           src={"/images/logo/1.png"}
