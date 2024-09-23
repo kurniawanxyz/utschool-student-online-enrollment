@@ -82,8 +82,9 @@ export function NavbarComponent() {
     );
   }
 
+
   const style2 = currentBp !== "sm" ? {
-    transform: 
+    transform:
       scrollPosition > 100
         ? `translateY(-${navbar1Height}px)`
         : "translateY(0)",
@@ -178,6 +179,13 @@ export function NavbarComponent() {
                   {item.text}
                 </ButtonNavigation>
               ))}
+              <ButtonNavigation
+                href="https://www.utschool.sch.id/en/contact"
+                className="text-[13px]"
+                dataActive={pathNow === "https://www.utschool.sch.id/en/contact" ? "true" : "false"}
+              >
+                Hubungi Kami
+              </ButtonNavigation>
             </ul>
           </div>
         )}
