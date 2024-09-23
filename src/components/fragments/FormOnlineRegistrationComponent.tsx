@@ -4,10 +4,23 @@ import Image from "next/image"
 import ButtonWizardComponent from "../elements/ButtonWizardComponent"
 import { useOnlineRegistration } from "@/stores/useOnlineRegistration"
 import dynamic from "next/dynamic"
-const FormDataDiriComponent = dynamic(() => import("./FormDataDiriComponent"))
-const FormRegistrationComponent = dynamic(() => import("./FormRegistrationComponent"))
-const FormInformasiKesehatanComponent = dynamic(() => import("./FormInformasiKesehatanComponent"))
 
+const LoadingComponent = () => (
+  <div className="flex justify-center items-center h-full">
+    <div className="w-12 h-12 border-4 border-t-4 border-gray-200 rounded-full animate-spin"></div>
+    <p className="text-2xl ml-4">Loading...</p>
+  </div>
+);
+
+const FormDataDiriComponent = dynamic(() => import("./FormDataDiriComponent"), {
+  loading: () => <LoadingComponent />,
+});
+const FormRegistrationComponent = dynamic(() => import("./FormRegistrationComponent"), {
+  loading: () => <LoadingComponent />,
+});
+const FormInformasiKesehatanComponent = dynamic(() => import("./FormInformasiKesehatanComponent"), {
+  loading: () => <LoadingComponent />,
+});
 export default function FormOnlineRegistrationComponent() {
   const { currentPage } = useOnlineRegistration()
   
@@ -18,7 +31,7 @@ export default function FormOnlineRegistrationComponent() {
         alt="UT SCHOOL"
         width={1000}
         height={1000}
-        className="absolute top-0 bottom-0 left-0 right-0 w-full h-full"
+        className="absolute top-0 bottom-0 left-0 right-0 w-full h-full object-cover z-0"
       />
       <div className="w-3/4 mx-auto mt-20 min-h-[50vh] z-10  rounded-md shadow-inner shadow-white bg-white/30  backdrop-blur-lg overflow-hidden p-5 md:p-10">
         <h2 className="text-2xl text-center font-extrabold text-black">Form Pendaftaran Siswa</h2>
