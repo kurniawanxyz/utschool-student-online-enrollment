@@ -17,7 +17,7 @@ export default function FormInformasiKesehatanComponent() {
   const [usingGlasses, setUsingGlasses] = useState<string>();
   const [blainColor, setBlainColor] = useState<string>();
   const [havePassIlness, setHavePassIlness] = useState<string>("0");
-  const [movingProgram, setMovingProgram] = useState<string>();
+  // const [movingProgram, setMovingProgram] = useState<string>();
   const { setDataInformasiKesehatan, setPage, dataInformasiKesehatan } = useOnlineRegistration()
   const router = useRouter()
 
@@ -170,7 +170,7 @@ export default function FormInformasiKesehatanComponent() {
       setUsingGlasses(dataInformasiKesehatan.wear_glasses)
     }
   }, [dataInformasiKesehatan])
-  console.log(movingProgram, blainColor)
+  console.log(blainColor)
 
   return (
     <form action={HandleAction} className="w-full flex flex-col gap-5">
