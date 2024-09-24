@@ -49,7 +49,6 @@ export default function FormRegistrationComponent() {
       setTrainingProgramSelected(dataRegistration.training_program_id);
       setSelectScheduleId(dataRegistration.learning_point_id);
       setPlacementQuestion(dataRegistration.is_willing_to_relocate);
-      setSchoolRegulationQuestion(dataRegistration.compliance_agreement);
     }
   }, [dataRegistration]);
 
@@ -74,18 +73,15 @@ export default function FormRegistrationComponent() {
 
   async function FormAction(formdata: FormData) {
     try {
-      if (!formdata.get("is_willing_to_relocate") || !formdata.get("compliance_agreement") || !formdata.get("sobat_school_id")) {
+      if (!formdata.get("is_willing_to_relocate") || !formdata.get("learning_point_id") || !formdata.get("learning_point_id") || !formdata.get("sobat_school_id")) {
         toast.error("Pastikan Semua Inputan Terisi");
         return false;
       }
       const payload: FormRegistrasiOnline = {
-        learning_pattern: formdata.get("learning_pattern") as string,
         is_willing_to_relocate: formdata.get("is_willing_to_relocate") as "1" | "0",
-        compliance_agreement: formdata.get("compliance_agreement") as "1" | "0",
         training_program_id: formdata.get("training_program_id") as string,
         learning_point_id: formdata.get("learning_point_id") as string,
         sobat_school_id: formdata.get("sobat_school_id") as string,
-        motivation: formdata.get("motivation") as string,
       };
       const result = FormRegistrasiOnlineSchema.safeParse(payload);
       if (!result.success) {
@@ -115,15 +111,10 @@ export default function FormRegistrationComponent() {
 
   return (
     <form action={FormAction} className="w-full flex flex-col gap-5">
-      <TextArea
-        label="Bagaimana pola belajar anda? Jelaskan!"
-        name="learning_pattern"
-        className="text-black"
-        defaultValue={dataRegistration?.learning_pattern ?? ""}
-      />
+
       <div className="flex flex-col gap-2">
         <p className="text-black">
-          Apakah Anda menginginkan pelatihan kerja di luar lokasi saat ini? (Jawa, Banjarmasin, Adaro, Makassar, Medan, Pekanbaru, Semarang)
+        Apakah Anda siap belajar di luar lokasi atau Domisili anda saat ini? 
         </p>
         <RadioButtonGroupComponent
           name="is_willing_to_relocate"
@@ -135,17 +126,6 @@ export default function FormRegistrationComponent() {
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <p className="text-black">Apakah Anda bersedia mematuhi peraturan sekolah?</p>
-        <RadioButtonGroupComponent
-          name="compliance_agreement"
-          className="flex"
-          options={confirm}
-          onChange={(value) => setSchoolRegulationQuestion(value)}
-          selectedValue={schoolRegulationQuestion as string}
-          isColumn={false}
-        />
-      </div>
 
       <div className="flex flex-col">
         <label className="text-sm font-medium text-black mb-1">Pilih Program Pelatihan</label>
@@ -213,14 +193,7 @@ export default function FormRegistrationComponent() {
           </select>
         </div>
       </div>
-
-      <TextArea
-        label="Jelaskan motivasi Anda untuk mengikuti program sekolah"
-        name="motivation"
-        className="text-black"
-        defaultValue={dataRegistration?.motivation ?? ""}
-      />
-
+      
       <div className="flex justify-between gap-3">
         <button
           name="button"

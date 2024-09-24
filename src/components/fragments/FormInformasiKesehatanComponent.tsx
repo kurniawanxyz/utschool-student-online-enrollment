@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 export default function FormInformasiKesehatanComponent() {
   const [usingGlasses, setUsingGlasses] = useState<string>();
   const [blainColor, setBlainColor] = useState<string>();
+  const [havePassIlness, setHavePassIlness] = useState<string>();
   const [movingProgram, setMovingProgram] = useState<string>();
   const { setDataInformasiKesehatan, setPage, dataInformasiKesehatan } = useOnlineRegistration()
   const router = useRouter()
@@ -36,6 +37,11 @@ export default function FormInformasiKesehatanComponent() {
       toast.warning("Pastikan data terisi")
       setPage("formulir-registrasi")
     }
+
+    if(localStorage.getItem("have-pass-ilness")){
+      setHavePassIlness(localStorage.getItem("have-pass-ilness") as string)
+    }
+
   }, [])
 
   async function HandleAction(formData: FormData) {
@@ -45,11 +51,18 @@ export default function FormInformasiKesehatanComponent() {
       return false;
     }
 
-    if (!formData.get("student_photo") || !formData.get("diploma_photo") || !formData.get("identity_photo")) {
+    if (!formData.get("family_card") || !formData.get("diploma_photo") || !formData.get("identity_photo")) {
       toast.error("Pastikan semua inputan terisi")
       return false;
     }
-    console.log(formData.get("student_photo"))
+
+    if(formData.get('have_pass_ilness') === "1"){
+      localStorage.setItem("have-pass-ilness", "1")
+      if(!formData.get("past_illnesses")){
+        toast.error("Anda belum mendeskripsikan penyakit yang pernah diderita")
+        return false;
+      }
+    }
 
     const payload = {
       past_illnesses: formData.get("past_illnesses") as string,
@@ -60,7 +73,7 @@ export default function FormInformasiKesehatanComponent() {
       address_and_phone_number: formData.get("address_and_phone_number") as string,
       school_transfer_option: formData.get("school_transfer_option") as "1" | "0",
       additional_information: formData.get("additional_information") as string,
-      student_photo: formData.get("student_photo") as File,
+      family_card: formData.get("family_card") as File,
       diploma_photo: formData.get("diploma_photo") as File,
       identity_photo: formData.get("identity_photo") as File
     };
@@ -79,7 +92,7 @@ export default function FormInformasiKesehatanComponent() {
       const dataDiri = localStorage.getItem("data-diri") as string;
       const dataRegistrasi = localStorage.getItem("data-registration") as string;
       const dataInformasiKesehatan = localStorage.getItem("data-informasi-kesehatan") as string;
-      const studentPhoto = formData.get("student_photo");
+      const family_card = formData.get("family_card");
       const diplomaPhoto = formData.get("diploma_photo");
       const identityPhoto = formData.get("identity_photo");
 
@@ -109,10 +122,10 @@ export default function FormInformasiKesehatanComponent() {
       // Menambahkan data JSON ke dalam FormData
 
       // Menambahkan file ke dalam FormData (jika ada)
-      formDataToSend.append('student_photo', studentPhoto as Blob);
-      formDataToSend.append('diploma_photo', diplomaPhoto as Blob);
       formDataToSend.append('identity_photo', identityPhoto as Blob);
-      console.log(formDataToSend.get("student_photo"));
+      formDataToSend.append('diploma_photo', diplomaPhoto as Blob);
+      formDataToSend.append('family_card', family_card as Blob);
+      console.log(formDataToSend.get("family_card"));
       formDataToSend.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
@@ -152,19 +165,32 @@ export default function FormInformasiKesehatanComponent() {
     if (dataInformasiKesehatan) {
       setBlainColor(dataInformasiKesehatan.color_blindness)
       setUsingGlasses(dataInformasiKesehatan.wear_glasses)
-      setMovingProgram(dataInformasiKesehatan.school_transfer_option)
     }
   }, [dataInformasiKesehatan])
   console.log(movingProgram, blainColor)
 
   return (
     <form action={HandleAction} className="w-full flex flex-col gap-5">
+
+<div className="flex flex-col gap-2">
+        <p className="text-black">Apakah Anda pernah menderita penyakit serius dan harus dirawat?</p>
+        <RadioButtonGroupComponent
+          name="have_pass_ilness"
+          className="flex"
+          options={confirm}
+          onChange={(value) => setHavePassIlness(value)}
+          selectedValue={havePassIlness as string}
+          isColumn={false}
+        />
+      </div>
+
       <TextArea
-        label="Apakah Anda pernah menderita penyakit serius dan harus dirawat?"
+        label="Deskripsikan penyakit yang pernah diderita"
         name="past_illnesses"
-        className="text-black"
+        className={`text-black ${havePassIlness === "0" ? "hidden" : ""}`}
         defaultValue={dataInformasiKesehatan.past_illnesses}
       />
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <InputComponent defaultValue={dataInformasiKesehatan.weight} label="Berat badan (kg)" type="text" name="weight" />
         <InputComponent defaultValue={dataInformasiKesehatan.height} label="Tinggi badan (cm)" name="height" type="text" />
@@ -195,39 +221,18 @@ export default function FormInformasiKesehatanComponent() {
       </div>
 
       <TextArea
-        label="Alamat & no. telepon yang dapat dihubungi jika ada sesuatu yang penting"
+        label="Alamat & no. telepon yang dapat dihubungi dalam keadaan darurat"
         name="address_and_phone_number"
         className="text-black"
         defaultValue={dataInformasiKesehatan.address_and_phone_number}
       />
 
-      <div className="flex flex-col gap-2">
-        <p className="text-black">
-          Apakah Anda ingin memindahkan program / diarahkan oleh sekolah (sesuai
-          dengan hasil evaluasi sekolah)?
-        </p>
-        <RadioButtonGroupComponent
-          name="school_transfer_option"
-          className="flex"
-          options={confirm}
-          onChange={(value) => setMovingProgram(value)}
-          selectedValue={movingProgram as string}
-          isColumn={false}
-        />
-      </div>
 
-      <TextArea
-        label="Informasi Tambahan"
-        name="additional_information"
-        className="text-black"
-        defaultValue={dataInformasiKesehatan.additional_information}
-      />
 
-      <InputComponent label="Foto" name="student_photo" type="file" />
+      <InputComponent label="Foto KTP (Asli)" name="identity_photo" type="file" />
+      <InputComponent label="Foto Ijazah (Asli)" name="diploma_photo" type="file" />
+      <InputComponent label="Foto KK (Asli)" name="family_card" type="file" />
 
-      <InputComponent label="Foto Diploma" name="diploma_photo" type="file" />
-
-      <InputComponent label="Foto KTP" name="identity_photo" type="file" />
 
       <div className="flex justify-between gap-3">
         <button

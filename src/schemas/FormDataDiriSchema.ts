@@ -56,7 +56,7 @@ export const FormOnlineEnrollmentSchema = z.object({
     .min(1, "Form inputan motivasi minimal 1 karakter")
     .max(500, "Form input motivasi maksimal 500 karatker"),
   additional_information: z.string().optional(),
-  student_photo: z
+  identity_photo: z
     .instanceof(File)
     .refine((file) => file.type.startsWith("image/"), {
       message: "File harus berupa gambar",
@@ -72,7 +72,7 @@ export const FormOnlineEnrollmentSchema = z.object({
     .refine((file) => file.size <= 10 * 1024 * 1024, {
       message: "Ukuran foto diploma maskimal 10 MB",
     }),
-  identity_photo: z
+  family_card: z
     .instanceof(File)
     .refine((file) => file.type.startsWith("image/"), {
       message: "File harus berupa gambar",
@@ -98,13 +98,10 @@ export const FormDataDiriSchema = FormOnlineEnrollmentSchema.pick({
 });
 
 export const FormRegistrasiOnlineSchema = FormOnlineEnrollmentSchema.pick({
-  learning_pattern: true,
   is_willing_to_relocate: true,
-  compliance_agreement: true,
   training_program_id: true,
   learning_point_id: true,
   sobat_school_id: true,
-  motivation: true,
 });
 
 export const FormInformasiKesehatanSchema = FormOnlineEnrollmentSchema.pick({
@@ -114,11 +111,9 @@ export const FormInformasiKesehatanSchema = FormOnlineEnrollmentSchema.pick({
   wear_glasses: true,
   color_blindness: true,
   address_and_phone_number: true,
-  school_transfer_option: true,
-  additional_information: true,
-  student_photo: true,
-  diploma_photo: true,
   identity_photo: true,
+  diploma_photo: true,
+  family_card: true,
 });
 
 export type FormDataDiriType = z.infer<typeof FormDataDiriSchema>;
