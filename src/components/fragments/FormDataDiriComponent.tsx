@@ -17,6 +17,8 @@ import { toast } from "react-toastify";
 export default function FormDataDiriComponent() {
   const [genderState, setGenderState] = useState<string>("");
   const [schoolType, setSchoolType] = useState<string>("");
+  const [other_major, setOtherMajor] = useState<boolean>(false);
+
   const gender: RadioOption[] = [
     {
       label: "Laki-laki",
@@ -27,6 +29,15 @@ export default function FormDataDiriComponent() {
       value: "P",
     },
   ];
+
+
+  useEffect(()=>{
+    if(localStorage.getItem("major") === "Lainya"){
+      setOtherMajor(true);
+    }
+  },[])
+
+
   const school_type: RadioOption[] = [
     {
       label: "SMK",
@@ -41,6 +52,10 @@ export default function FormDataDiriComponent() {
   const { dataDiri, setDataDiri, setPage } = useOnlineRegistration();
 
   async function FormDataDiriService(formdata: FormData) {
+    localStorage.setItem("major", formdata.get("major") as string);
+    if(other_major){
+      localStorage.setItem("other_major", formdata.get("other_major") as string);
+    }
     try {
       const payload: FormDataDiriType = {
         full_name: formdata.get("full_name") as string,
@@ -54,7 +69,7 @@ export default function FormDataDiriComponent() {
         hobby: formdata.get("hobby") as string,
         school_of_origin: formdata.get("school_of_origin") as string,
         school_type: formdata.get("school_type") as string,
-        major: formdata.get("major") as string,
+        major: other_major ? formdata.get("other_major") as string : formdata.get("major") as string,
       };
       const result = FormDataDiriSchema.safeParse(payload);
       if (!result.success) {
@@ -159,32 +174,46 @@ export default function FormDataDiriComponent() {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3">
         <InputComponent
           label="Nama Sekolah"
           defaultValue={dataDiri["school_of_origin"]}
           name="school_of_origin"
         />
+        <div className="flex flex-col">
+          <label htmlFor="grade" className="mb-2 text-black">
+            Jurusan
+          </label>
+          <select
+            name="major"
+            defaultValue={localStorage.getItem("major")??""}
+            onChange={(value)=>{
+              if(value.target.value === "Lainya"){
+                setOtherMajor(true);
+              }else{
+                setOtherMajor(false);
+              }
+            }}
+            className="border text-black rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="" disabled>
+              Pilih Jurusan
+            </option>
+            <option value="Teknik Alat Berat">Teknik Alat Berat</option>
+            <option value="Teknik Kendaraan Ringan">Teknik Kendaraan Ringan</option>
+            <option value="Teknik Bisnis Sepeda Motor">Teknik Bisnis Sepeda Motor</option>
+            <option value="Teknik Instalasi dan Tenaga Litrik">Teknik Instalasi dan Tenaga Litrik</option>
+            <option value="Lainya">Lainya</option>
+          </select>
+        </div>
         <InputComponent
           label="Nama Jurusan"
-          name="major"
-          defaultValue={dataDiri["major"]}
+          name="other_major"
+          className={`${other_major ? "block" : "hidden"}`}
+          defaultValue={localStorage.getItem("other_major")??""}
         />
       </div>
 
-      {/* <InputComponent label="Jurusan Lainya" name="other-major" /> */}
-      {/* <div className="grid grid-cols-2 gap-3"> */}
-      {/*   <InputComponent */}
-      {/*     label="Jumlah Saudara Kandung" */}
-      {/*     name="number-of-siblings" */}
-      {/*     type="number" */}
-      {/*   /> */}
-      {/*   <InputComponent */}
-      {/*     label="Kamu Anak Yang Keberapa" */}
-      {/*     name="major" */}
-      {/*     type="number" */}
-      {/*   /> */}
-      {/* </div> */}
 
       <div className="flex justify-end">
         <button

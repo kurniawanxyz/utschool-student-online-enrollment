@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 export default function FormInformasiKesehatanComponent() {
   const [usingGlasses, setUsingGlasses] = useState<string>();
   const [blainColor, setBlainColor] = useState<string>();
-  const [havePassIlness, setHavePassIlness] = useState<string>();
+  const [havePassIlness, setHavePassIlness] = useState<string>("0");
   const [movingProgram, setMovingProgram] = useState<string>();
   const { setDataInformasiKesehatan, setPage, dataInformasiKesehatan } = useOnlineRegistration()
   const router = useRouter()
@@ -51,7 +51,7 @@ export default function FormInformasiKesehatanComponent() {
       return false;
     }
 
-    if (!formData.get("family_card") || !formData.get("diploma_photo") || !formData.get("identity_photo")) {
+    if (!formData.get("family_card_photo") || !formData.get("diploma_photo") || !formData.get("resident_photo")) {
       toast.error("Pastikan semua inputan terisi")
       return false;
     }
@@ -73,9 +73,9 @@ export default function FormInformasiKesehatanComponent() {
       address_and_phone_number: formData.get("address_and_phone_number") as string,
       school_transfer_option: formData.get("school_transfer_option") as "1" | "0",
       additional_information: formData.get("additional_information") as string,
-      family_card: formData.get("family_card") as File,
+      family_card_photo: formData.get("family_card_photo") as File,
       diploma_photo: formData.get("diploma_photo") as File,
-      identity_photo: formData.get("identity_photo") as File
+      resident_photo: formData.get("resident_photo") as File
     };
     const result = FormInformasiKesehatanSchema.safeParse(payload);
     if (!result.success) {
@@ -92,9 +92,9 @@ export default function FormInformasiKesehatanComponent() {
       const dataDiri = localStorage.getItem("data-diri") as string;
       const dataRegistrasi = localStorage.getItem("data-registration") as string;
       const dataInformasiKesehatan = localStorage.getItem("data-informasi-kesehatan") as string;
-      const family_card = formData.get("family_card");
+      const family_card_photo = formData.get("family_card_photo");
       const diplomaPhoto = formData.get("diploma_photo");
-      const identityPhoto = formData.get("identity_photo");
+      const identityPhoto = formData.get("resident_photo");
 
       // Memastikan semua data ada
       // Parsing hanya jika tipe data string
@@ -122,10 +122,10 @@ export default function FormInformasiKesehatanComponent() {
       // Menambahkan data JSON ke dalam FormData
 
       // Menambahkan file ke dalam FormData (jika ada)
-      formDataToSend.append('identity_photo', identityPhoto as Blob);
+      formDataToSend.append('resident_photo', identityPhoto as Blob);
       formDataToSend.append('diploma_photo', diplomaPhoto as Blob);
-      formDataToSend.append('family_card', family_card as Blob);
-      console.log(formDataToSend.get("family_card"));
+      formDataToSend.append('family_card_photo', family_card_photo as Blob);
+      console.log(formDataToSend.get("family_card_photo"));
       formDataToSend.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
@@ -156,8 +156,11 @@ export default function FormInformasiKesehatanComponent() {
       localStorage.removeItem("data-informasi-kesehatan")
 
       toast.success("Berhasil melakukan pendaftaran")
-      router.refresh()
-      router.push("/")
+      router.push("/");
+      router.refresh();
+      setTimeout(() => {
+        window.location.href = "https://www.utschool.sch.id/";
+      }, 2000);
     }
   }
 
@@ -229,9 +232,9 @@ export default function FormInformasiKesehatanComponent() {
 
 
 
-      <InputComponent label="Foto KTP (Asli)" name="identity_photo" type="file" />
+      <InputComponent label="Foto KTP (Asli)" name="resident_photo" type="file" />
       <InputComponent label="Foto Ijazah (Asli)" name="diploma_photo" type="file" />
-      <InputComponent label="Foto KK (Asli)" name="family_card" type="file" />
+      <InputComponent label="Foto KK (Asli)" name="family_card_photo" type="file" />
 
 
       <div className="flex justify-between gap-3">

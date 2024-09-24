@@ -51,12 +51,13 @@ export const FormOnlineEnrollmentSchema = z.object({
   major: z.string().nonempty({
     message: "Jurusan sekolah tidak boleh kosong",
   }), // Converts 0 atau 1 ke boolean
+  other_major: z.string().optional(), // Converts 0 atau 1 ke boolean
   motivation: z
     .string()
     .min(1, "Form inputan motivasi minimal 1 karakter")
     .max(500, "Form input motivasi maksimal 500 karatker"),
   additional_information: z.string().optional(),
-  identity_photo: z
+  resident_photo: z
     .instanceof(File)
     .refine((file) => file.type.startsWith("image/"), {
       message: "File harus berupa gambar",
@@ -72,7 +73,7 @@ export const FormOnlineEnrollmentSchema = z.object({
     .refine((file) => file.size <= 10 * 1024 * 1024, {
       message: "Ukuran foto diploma maskimal 10 MB",
     }),
-  family_card: z
+  family_card_photo: z
     .instanceof(File)
     .refine((file) => file.type.startsWith("image/"), {
       message: "File harus berupa gambar",
@@ -95,6 +96,7 @@ export const FormDataDiriSchema = FormOnlineEnrollmentSchema.pick({
   school_of_origin: true,
   school_type: true,
   major: true,
+  other_major: true,
 });
 
 export const FormRegistrasiOnlineSchema = FormOnlineEnrollmentSchema.pick({
@@ -111,9 +113,9 @@ export const FormInformasiKesehatanSchema = FormOnlineEnrollmentSchema.pick({
   wear_glasses: true,
   color_blindness: true,
   address_and_phone_number: true,
-  identity_photo: true,
+  resident_photo: true,
   diploma_photo: true,
-  family_card: true,
+  family_card_photo: true,
 });
 
 export type FormDataDiriType = z.infer<typeof FormDataDiriSchema>;

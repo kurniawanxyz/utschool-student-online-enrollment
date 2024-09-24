@@ -3,8 +3,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import RadioButtonGroupComponent, { RadioOption } from "../elements/RadioButtonGroupComponent";
-import TextArea from "../elements/TextAreaComponent";
-import { LearningPoint, ScheduleType, TrainingProgram, useEnrollmentSchedule } from "@/stores/useEnrollmentSchedule";
+import { LearningPoint, TrainingProgram, useEnrollmentSchedule } from "@/stores/useEnrollmentSchedule";
 import { FormRegistrasiOnline, FormRegistrasiOnlineSchema } from "@/schemas/FormDataDiriSchema";
 import { ZodIssue } from "zod";
 import { toast } from "react-toastify";
@@ -73,10 +72,17 @@ export default function FormRegistrationComponent() {
 
   async function FormAction(formdata: FormData) {
     try {
+      if(currentSelect != "ALL"){
+        toast.error("Pastikan Kamu sudah memilih lokasi pelatihan & lokasi ujian");
+        return false;
+      }
+      
       if (!formdata.get("is_willing_to_relocate") || !formdata.get("learning_point_id") || !formdata.get("learning_point_id") || !formdata.get("sobat_school_id")) {
         toast.error("Pastikan Semua Inputan Terisi");
         return false;
       }
+
+
       const payload: FormRegistrasiOnline = {
         is_willing_to_relocate: formdata.get("is_willing_to_relocate") as "1" | "0",
         training_program_id: formdata.get("training_program_id") as string,
